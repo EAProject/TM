@@ -1,0 +1,16 @@
+com\tm\entities\Teamchecking_.class
+com\tm\entities\Appointment.class
+com\tm\entities\Setting.class
+com\tm\entities\Test_.class
+com\tm\entities\Student.class
+com\tm\entities\Teamchecking.class
+com\tm\entities\Setting_.class
+com\tm\entities\Teacher_.class
+com\tm\entities\Student_.class
+com\tm\entities\Test.class
+com\tm\entities\Teacher.class
+com\tm\ejb\AbstractFacade.class
+com\tm\entities\Appointment_.class
+com\tm\ejb\TeacherFacade.class
+com\tm\controller\TeacherBean.class
+com\tm\ejb\TeacherFacadeLocal.class
