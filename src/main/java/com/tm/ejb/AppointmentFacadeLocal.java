@@ -5,7 +5,7 @@
  */
 package com.tm.ejb;
 
-import com.tm.entities.Teacher;
+import com.tm.entities.Appointment;
 import java.util.List;
 import javax.ejb.Local;
 
@@ -14,19 +14,19 @@ import javax.ejb.Local;
  * @author sunil
  */
 @Local
-public interface TeacherFacadeLocal {
+public interface AppointmentFacadeLocal {
 
-    void create(Teacher teacher);
+    void create(Appointment appointment);
 
-    void edit(Teacher teacher);
+    void edit(Appointment appointment);
 
-    void remove(Teacher teacher);
+    void remove(Appointment appointment);
 
-    Teacher find(Object id);
+    Appointment find(Object id);
 
-    List<Teacher> findAll();
+    List<Appointment> findAll();
 
-    List<Teacher> findRange(int[] range);
+    List<Appointment> findRange(int[] range);
 
     int count();
     

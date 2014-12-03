@@ -30,7 +30,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 @NamedQueries({
     @NamedQuery(name = "Teamchecking.findAll", query = "SELECT t FROM Teamchecking t"),
     @NamedQuery(name = "Teamchecking.findById", query = "SELECT t FROM Teamchecking t WHERE t.id = :id"),
-    @NamedQuery(name = "Teamchecking.findByCheckingTime", query = "SELECT t FROM Teamchecking t WHERE t.checkingTime = :checkingTime"),
+    @NamedQuery(name = "Teamchecking.findByCheckingTime", query = "SELECT t FROM Teamchecking t WHERE t.checkingStartTime = :checkingStartTime"),
     @NamedQuery(name = "Teamchecking.findByChecked", query = "SELECT t FROM Teamchecking t WHERE t.checked = :checked"),
     @NamedQuery(name = "Teamchecking.findByPending", query = "SELECT t FROM Teamchecking t WHERE t.pending = :pending")})
 public class Teamchecking implements Serializable {
@@ -41,12 +41,16 @@ public class Teamchecking implements Serializable {
     @Column(name = "id")
     private Integer id;
     @Size(max = 200)
-    @Column(name = "checking_time")
-    private String checkingTime;
+    @Column(name = "checking_start_time")
+    private String checkingStartTime;
     @Column(name = "checked")
     private Boolean checked;
     @Column(name = "pending")
     private Boolean pending;
+    @Column(name = "checking_end_time")
+    private String checkingEndTime;
+    @Column(name = "note")
+    private String note;
     @JoinColumn(name = "teacher_id", referencedColumnName = "id")
     @ManyToOne
     private Teacher teacherId;
@@ -69,13 +73,22 @@ public class Teamchecking implements Serializable {
         this.id = id;
     }
 
-    public String getCheckingTime() {
-        return checkingTime;
+    public String getCheckingStartTime() {
+        return checkingStartTime;
     }
 
-    public void setCheckingTime(String checkingTime) {
-        this.checkingTime = checkingTime;
+    public void setCheckingStartTime(String checkingStartTime) {
+        this.checkingStartTime = checkingStartTime;
     }
+
+    public String getCheckingEndTime() {
+        return checkingEndTime;
+    }
+
+    public void setCheckingEndTime(String checkingEndTime) {
+        this.checkingEndTime = checkingEndTime;
+    }
+   
 
     public Boolean getChecked() {
         return checked;
@@ -104,6 +117,15 @@ public class Teamchecking implements Serializable {
     public Student getStudentId() {
         return studentId;
     }
+
+    public String getNote() {
+        return note;
+    }
+
+    public void setNote(String note) {
+        this.note = note;
+    }
+    
 
     public void setStudentId(Student studentId) {
         this.studentId = studentId;

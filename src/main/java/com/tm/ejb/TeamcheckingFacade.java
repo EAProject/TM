@@ -5,7 +5,7 @@
  */
 package com.tm.ejb;
 
-import com.tm.entities.Teacher;
+import com.tm.entities.Teamchecking;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -15,7 +15,7 @@ import javax.persistence.PersistenceContext;
  * @author sunil
  */
 @Stateless
-public class TeacherFacade extends AbstractFacade<Teacher> implements TeacherFacadeLocal {
+public class TeamcheckingFacade extends AbstractFacade<Teamchecking> implements TeamcheckingFacadeLocal {
     @PersistenceContext(unitName = "tm-PU")
     private EntityManager em;
 
@@ -24,8 +24,8 @@ public class TeacherFacade extends AbstractFacade<Teacher> implements TeacherFac
         return em;
     }
 
-    public TeacherFacade() {
-        super(Teacher.class);
+    public TeamcheckingFacade() {
+        super(Teamchecking.class);
     }
     
 }

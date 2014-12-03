@@ -30,6 +30,8 @@ public class TeacherBean implements Serializable {
     private TeacherFacadeLocal teacherFacadeLocal;
     Teacher teacher = new Teacher();
     List<Teacher> teachers = new ArrayList<Teacher>();
+    
+   
 
     public TeacherBean() {
         try {

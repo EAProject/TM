@@ -10,7 +10,7 @@ import javax.persistence.EntityManager;
 
 /**
  *
- * @author SuJoshi
+ * @author sunil
  */
 public abstract class AbstractFacade<T> {
     private Class<T> entityClass;
@@ -22,7 +22,6 @@ public abstract class AbstractFacade<T> {
     protected abstract EntityManager getEntityManager();
 
     public void create(T entity) {
-        System.out.println("CREATE HERE");
         getEntityManager().persist(entity);
     }
 
@@ -39,10 +38,8 @@ public abstract class AbstractFacade<T> {
     }
 
     public List<T> findAll() {
-        System.out.println("::::::::::::::::::::::::::::");
         javax.persistence.criteria.CriteriaQuery cq = getEntityManager().getCriteriaBuilder().createQuery();
         cq.select(cq.from(entityClass));
-        System.out.println("SIZE IN EJB>>>>>>>>>>>> "+getEntityManager().createQuery(cq).getResultList());
         return getEntityManager().createQuery(cq).getResultList();
     }
 

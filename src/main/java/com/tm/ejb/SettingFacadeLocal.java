@@ -5,7 +5,7 @@
  */
 package com.tm.ejb;
 
-import com.tm.entities.Teacher;
+import com.tm.entities.Setting;
 import java.util.List;
 import javax.ejb.Local;
 
@@ -14,19 +14,19 @@ import javax.ejb.Local;
  * @author sunil
  */
 @Local
-public interface TeacherFacadeLocal {
+public interface SettingFacadeLocal {
 
-    void create(Teacher teacher);
+    void create(Setting setting);
 
-    void edit(Teacher teacher);
+    void edit(Setting setting);
 
-    void remove(Teacher teacher);
+    void remove(Setting setting);
 
-    Teacher find(Object id);
+    Setting find(Object id);
 
-    List<Teacher> findAll();
+    List<Setting> findAll();
 
-    List<Teacher> findRange(int[] range);
+    List<Setting> findRange(int[] range);
 
     int count();
     

@@ -9,19 +9,28 @@ package com.tm.controller;
  *
  * @author sunil
  */
+import com.tm.ejb.TeacherFacadeLocal;
+import com.tm.ejb.TeamcheckingFacadeLocal;
+import com.tm.entities.Teacher;
+import com.tm.entities.Teamchecking;
 import java.io.Serializable;
+import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
+import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
+import javax.servlet.http.HttpSession;
 
 import org.primefaces.event.ScheduleEntryMoveEvent;
 import org.primefaces.event.ScheduleEntryResizeEvent;
@@ -39,20 +48,42 @@ public class ScheduleView implements Serializable {
     private ScheduleModel eventModel;
     private ScheduleModel lazyEventModel;
     private ScheduleEvent event = new DefaultScheduleEvent();
-  
+    @EJB
+    private TeamcheckingFacadeLocal teamcheckingFacadeLocal;
+    @EJB
+    private TeacherFacadeLocal teacherFacadeLocal;
+    List<Teamchecking> teamcheckings;
+    private String hourMinuteSchedule;
+
     @PostConstruct
     public void init() {
         eventModel = new DefaultScheduleModel();
- 
-         String string1 = "Dec 03, 2014";  
-          Date date1 = null;
+
+        teamcheckings = new ArrayList<>();
+        teamcheckings = teamcheckingFacadeLocal.findAll();
+        System.out.println("Size is >> " + teamcheckings.size());
+        for (Teamchecking teamchecking : teamcheckings) {
+            Date tmStartDate = null;
+            Date tmEndDate = null;
+            try {
+                    tmStartDate = new SimpleDateFormat("MMMM d, yyyy").parse(teamchecking.getCheckingStartTime());
+                    tmEndDate = new SimpleDateFormat("MMMM d, yyyy").parse(teamchecking.getCheckingEndTime());
+            } catch (ParseException ex) {
+                Logger.getLogger(ScheduleView.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            eventModel.addEvent(new DefaultScheduleEvent(teamchecking.getNote(), tmStartDate, tmEndDate));
+
+        }
+
+        String string1 = "December 03, 2014";
+        Date date1 = null;
         try {
             date1 = new SimpleDateFormat("MMMM d, yyyy").parse(string1);
         } catch (ParseException ex) {
             Logger.getLogger(ScheduleView.class.getName()).log(Level.SEVERE, null, ex);
         }
-        System.out.println(":::::::::::::::::::"+date1); // Sat Jan 02 00:00:00 BOT 2010
         eventModel.addEvent(new DefaultScheduleEvent("DEF", date1, date1));
+
         System.out.println("Event model is " + eventModel);
         Date startDate = new Date();
         Date finishDate = new Date();
@@ -69,6 +100,7 @@ public class ScheduleView implements Serializable {
             }
         };
     }
+
     public Date getRandomDate(Date base) {
         System.out.println("GET RANDOM DATE");
         Calendar date = Calendar.getInstance();
@@ -102,7 +134,6 @@ public class ScheduleView implements Serializable {
         return calendar;
     }
 
-
     public ScheduleEvent getEvent() {
         return event;
     }
@@ -111,12 +142,38 @@ public class ScheduleView implements Serializable {
         this.event = event;
     }
 
+    public String convertStartDate() {
+        String date = "Thu Dec 04 00:00:00 CST 2014";
+        String[] startDateSeparate = date.split(" ");
+
+        String tmStartDate = startDateSeparate[1] + " " + startDateSeparate[2] + "," + " " + startDateSeparate[5];
+        return "";
+    }
+
     public void addEvent(ActionEvent actionEvent) {
-        System.out.println("EV here>> " + event);
-       // Teamchecking teamchecking=new Teamchecking();
-       // teamchecking.setChecked(false);
+        System.out.println("Hour min "+hourMinuteSchedule);
         
-       // teamcheckingFacadeLocal.create(null);
+        Date date1 = event.getStartDate();
+        DateFormat df = new SimpleDateFormat("MMMM d, yyyy");
+        String startDate = df.format(date1);
+        Date date2 = event.getEndDate();
+        DateFormat dfEnd = new SimpleDateFormat("MMMM d, yyyy");
+        String endDate = dfEnd.format(date2);
+
+        HttpSession session = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(true);
+        int teacherId = (int) session.getAttribute("userId");
+        System.out.println("Teacher iD is " + teacherId);
+        Teacher teacher = teacherFacadeLocal.find(teacherId);
+        System.out.println("Teacher Name is " + teacher.getFirstName());
+
+        Teamchecking teamchecking = new Teamchecking();
+        teamchecking.setChecked(Boolean.FALSE);
+        teamchecking.setCheckingStartTime(startDate);
+        teamchecking.setCheckingEndTime(endDate);
+        teamchecking.setTeacherId(teacher);
+        teamchecking.setNote(event.getTitle());
+        
+        teamcheckingFacadeLocal.create(teamchecking);
         if (event.getId() == null) {
             eventModel.addEvent(event);
         } else {
@@ -148,4 +205,13 @@ public class ScheduleView implements Serializable {
     private void addMessage(FacesMessage message) {
         FacesContext.getCurrentInstance().addMessage(null, message);
     }
+
+    public String getHourMinuteSchedule() {
+        return hourMinuteSchedule;
+    }
+
+    public void setHourMinuteSchedule(String hourMinuteSchedule) {
+        this.hourMinuteSchedule = hourMinuteSchedule;
+    }
+    
 }
