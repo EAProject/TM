@@ -6,6 +6,7 @@
 package com.tm.entities;
 
 import java.io.Serializable;
+import java.util.Date;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -17,8 +18,9 @@ import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import javax.validation.constraints.Size;
-import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
@@ -26,7 +28,7 @@ import javax.xml.bind.annotation.XmlRootElement;
  */
 @Entity
 @Table(name = "teamchecking")
-@XmlRootElement
+//@XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Teamchecking.findAll", query = "SELECT t FROM Teamchecking t"),
     @NamedQuery(name = "Teamchecking.findById", query = "SELECT t FROM Teamchecking t WHERE t.id = :id"),
@@ -34,11 +36,12 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "Teamchecking.findByChecked", query = "SELECT t FROM Teamchecking t WHERE t.checked = :checked"),
     @NamedQuery(name = "Teamchecking.findByPending", query = "SELECT t FROM Teamchecking t WHERE t.pending = :pending")})
 public class Teamchecking implements Serializable {
+
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
-    @Column(name = "id")
+    @Column(name = "id", nullable = false)
     private Integer id;
     @Size(max = 200)
     @Column(name = "checking_start_time")
@@ -51,6 +54,11 @@ public class Teamchecking implements Serializable {
     private String checkingEndTime;
     @Column(name = "note")
     private String note;
+    @Column(name = "check_hours")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date fromHours;
+    @Column(name = "calendar_id")
+    private String calendarId;
     @JoinColumn(name = "teacher_id", referencedColumnName = "id")
     @ManyToOne
     private Teacher teacherId;
@@ -60,6 +68,26 @@ public class Teamchecking implements Serializable {
 
     public Teamchecking() {
     }
+
+    public Date getFromHours() {
+        return fromHours;
+    }
+
+    public void setFromHours(Date fromHours) {
+        this.fromHours = fromHours;
+    }
+
+    public String getCalendarId() {
+        return calendarId;
+    }
+
+    public void setCalendarId(String calendarId) {
+        this.calendarId = calendarId;
+    }
+
+    
+
+    
 
     public Teamchecking(Integer id) {
         this.id = id;
@@ -88,7 +116,6 @@ public class Teamchecking implements Serializable {
     public void setCheckingEndTime(String checkingEndTime) {
         this.checkingEndTime = checkingEndTime;
     }
-   
 
     public Boolean getChecked() {
         return checked;
@@ -125,12 +152,18 @@ public class Teamchecking implements Serializable {
     public void setNote(String note) {
         this.note = note;
     }
-    
 
     public void setStudentId(Student studentId) {
         this.studentId = studentId;
     }
 
+//    public Date getCurrentTime() {
+//        return currentTime;
+//    }
+//
+//    public void setCurrentTime(Date currentTime) {
+//        this.currentTime = currentTime;
+//    }
     @Override
     public int hashCode() {
         int hash = 0;
@@ -155,5 +188,5 @@ public class Teamchecking implements Serializable {
     public String toString() {
         return "com.tm.entities.Teamchecking[ id=" + id + " ]";
     }
-    
+
 }
