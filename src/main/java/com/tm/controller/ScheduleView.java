@@ -70,19 +70,21 @@ public class ScheduleView implements Serializable {
     public void init() {
         eventModel = new DefaultScheduleModel();        
         teamcheckings = new ArrayList<>();
-        teamcheckings = teamcheckingFacadeLocal.findAll();
+        teamcheckings = teamcheckingFacadeLocal.findAll();        
         System.out.println("Size is >> " + teamcheckings.size());
         for (Teamchecking teamchecking : teamcheckings) {
             Date tmStartDate = null;
             Date tmEndDate = null;
-            try {
-                    tmStartDate = new SimpleDateFormat("MMMM d, yyyy").parse(teamchecking.getCheckingStartTime());
-                    tmEndDate = new SimpleDateFormat("MMMM d, yyyy").parse(teamchecking.getCheckingEndTime());
-            } catch (ParseException ex) {
-                Logger.getLogger(ScheduleView.class.getName()).log(Level.SEVERE, null, ex);
+            if(teamchecking.getPending()==true){
+                    try {
+                        tmStartDate = new SimpleDateFormat("MMMM d, yyyy").parse(teamchecking.getCheckingStartTime());
+                        tmEndDate = new SimpleDateFormat("MMMM d, yyyy").parse(teamchecking.getCheckingEndTime());
+                } catch (ParseException ex) {
+                    Logger.getLogger(ScheduleView.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                eventModel.addEvent(new DefaultScheduleEvent(teamchecking.getNote(), tmStartDate, tmEndDate,teamchecking.getFromHours()));
             }
-            //Date d=teamchecking.getFromHours();
-            eventModel.addEvent(new DefaultScheduleEvent(teamchecking.getNote(), tmStartDate, tmEndDate,teamchecking.getFromHours()));
+            
         }
     }
 
