@@ -37,7 +37,7 @@ import org.primefaces.event.ScheduleEntryResizeEvent;
 import org.primefaces.event.SelectEvent;
 import org.primefaces.model.DefaultScheduleEvent;
 import org.primefaces.model.DefaultScheduleModel;
-import org.primefaces.model.LazyScheduleModel;
+//import org.primefaces.model.LazyScheduleModel;
 import org.primefaces.model.ScheduleEvent;
 import org.primefaces.model.ScheduleModel;
 
@@ -53,12 +53,22 @@ public class ScheduleView implements Serializable {
     @EJB
     private TeacherFacadeLocal teacherFacadeLocal;
     List<Teamchecking> teamcheckings;
-    private String hourMinuteSchedule;
+    private Date hourMinuteSchedule;
+    private String test="AAA";
+
+    public String getTest() {
+        return test;
+    }
+
+    public void setTest(String test) {
+        this.test = test;
+    }
+    
+    
 
     @PostConstruct
     public void init() {
-        eventModel = new DefaultScheduleModel();
-
+        eventModel = new DefaultScheduleModel();        
         teamcheckings = new ArrayList<>();
         teamcheckings = teamcheckingFacadeLocal.findAll();
         System.out.println("Size is >> " + teamcheckings.size());
@@ -71,34 +81,9 @@ public class ScheduleView implements Serializable {
             } catch (ParseException ex) {
                 Logger.getLogger(ScheduleView.class.getName()).log(Level.SEVERE, null, ex);
             }
-            eventModel.addEvent(new DefaultScheduleEvent(teamchecking.getNote(), tmStartDate, tmEndDate));
-
+            //Date d=teamchecking.getFromHours();
+            eventModel.addEvent(new DefaultScheduleEvent(teamchecking.getNote(), tmStartDate, tmEndDate,teamchecking.getFromHours()));
         }
-
-        String string1 = "December 03, 2014";
-        Date date1 = null;
-        try {
-            date1 = new SimpleDateFormat("MMMM d, yyyy").parse(string1);
-        } catch (ParseException ex) {
-            Logger.getLogger(ScheduleView.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        eventModel.addEvent(new DefaultScheduleEvent("DEF", date1, date1));
-
-        System.out.println("Event model is " + eventModel);
-        Date startDate = new Date();
-        Date finishDate = new Date();
-        eventModel.addEvent(new DefaultScheduleEvent("ABC", startDate, finishDate));
-        System.out.println("New Date is " + new Date());
-        lazyEventModel = new LazyScheduleModel() {
-            @Override
-            public void loadEvents(Date start, Date end) {
-                Date random = getRandomDate(start);
-                addEvent(new DefaultScheduleEvent("Lazy Event 1", random, random));
-
-                random = getRandomDate(start);
-                addEvent(new DefaultScheduleEvent("Lazy Event 2", random, random));
-            }
-        };
     }
 
     public Date getRandomDate(Date base) {
@@ -106,7 +91,6 @@ public class ScheduleView implements Serializable {
         Calendar date = Calendar.getInstance();
         date.setTime(base);
         date.add(Calendar.DATE, ((int) (Math.random() * 30)) + 1);    //set random day of month
-
         return date.getTime();
     }
 
@@ -119,6 +103,7 @@ public class ScheduleView implements Serializable {
 
     public ScheduleModel getEventModel() {
         System.out.println("EVENT MODEL IS>> " + eventModel);
+        System.out.println("ID IS "+event.getData());
         return eventModel;
     }
 
@@ -151,7 +136,8 @@ public class ScheduleView implements Serializable {
     }
 
     public void addEvent(ActionEvent actionEvent) {
-        System.out.println("Hour min "+hourMinuteSchedule);
+         System.out.println("Title min >>>>>>>>>>>>>>>"+event.getTitle());
+        System.out.println("EVENT ID min >>>>>>>>>>>>>>>"+event.getData());
         
         Date date1 = event.getStartDate();
         DateFormat df = new SimpleDateFormat("MMMM d, yyyy");
@@ -171,8 +157,12 @@ public class ScheduleView implements Serializable {
         teamchecking.setCheckingStartTime(startDate);
         teamchecking.setCheckingEndTime(endDate);
         teamchecking.setTeacherId(teacher);
+       // teamchecking.setCurrentTime(hourMinuteSchedule);
+        teamchecking.setFromHours((Date) event.getData());
         teamchecking.setNote(event.getTitle());
-        
+        teamchecking.setPending(Boolean.TRUE);
+        System.out.println("IN CREATE SCHEDULE");
+        teamchecking.setCalendarId(event.getId());
         teamcheckingFacadeLocal.create(teamchecking);
         if (event.getId() == null) {
             eventModel.addEvent(event);
@@ -183,16 +173,18 @@ public class ScheduleView implements Serializable {
     }
 
     public void onEventSelect(SelectEvent selectEvent) {
+        System.out.println("EVENT SELECT");
+         System.out.println("ID IS "+event.getData());
         event = (ScheduleEvent) selectEvent.getObject();
     }
 
     public void onDateSelect(SelectEvent selectEvent) {
-        System.out.println(">>>>>>>>>>>>> " + selectEvent.getObject());
+        System.out.println(">>>>>>>>>>>>> " + event.getData());
         event = new DefaultScheduleEvent("", (Date) selectEvent.getObject(), (Date) selectEvent.getObject());
-        System.out.println("ON DATE SELECT " + event);
     }
 
     public void onEventMove(ScheduleEntryMoveEvent event) {
+         System.out.println("ONEVENT MODE>>>>>> "+event);
         FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Event moved", "Day delta:" + event.getDayDelta() + ", Minute delta:" + event.getMinuteDelta());
         addMessage(message);
     }
@@ -206,12 +198,14 @@ public class ScheduleView implements Serializable {
         FacesContext.getCurrentInstance().addMessage(null, message);
     }
 
-    public String getHourMinuteSchedule() {
+    public Date getHourMinuteSchedule() {
         return hourMinuteSchedule;
     }
 
-    public void setHourMinuteSchedule(String hourMinuteSchedule) {
+    public void setHourMinuteSchedule(Date hourMinuteSchedule) {
         this.hourMinuteSchedule = hourMinuteSchedule;
     }
+
+    
     
 }
