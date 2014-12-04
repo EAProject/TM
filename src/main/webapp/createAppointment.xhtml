@@ -1,27 +1,20 @@
-<?xml version='1.0' encoding='UTF-8' ?>
+<?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
-      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
       xmlns:p="http://primefaces.org/ui">
-    <h:head>
-        <title>Facelet Title</title>
-        <h:outputStylesheet name="style.css" />
 
-        <style type="text/css">
-            .value {
-                width: 1000px;
-            }
-        </style>
+    <ui:composition template="/main_template.xhtml">
+        <ui:define name="body">
 
-    </h:head>
-    <h:body>
         <h:form>
             <p:growl id="messages" showDetail="true" />
 
             <h:panelGrid columnClasses="value">
                 <h3 style="margin-top: 0">Editable Schedule</h3>
-                <p:schedule id="schedule" value="#{scheduleView.eventModel}" widgetVar="myschedule" aspectRatio="3" timeZone="CST">
+                <p:schedule id="schedule" value="#{scheduleView.eventModel}"  aspectRatio="3" widgetVar="myschedule" timeZone="CST">
                     <p:ajax event="dateSelect" listener="#{scheduleView.onDateSelect}" update="eventDetails" oncomplete="PF('eventDialog').show();" />
                     <p:ajax event="eventSelect" listener="#{scheduleView.onEventSelect}" update="eventDetails" oncomplete="PF('eventDialog').show();" />
                     <p:ajax event="eventMove" listener="#{scheduleView.onEventMove}" update="messages" />
@@ -56,7 +49,9 @@
                 </h:panelGrid>
             </p:dialog>   
         </h:form>
+            
+            
+        </ui:define>
+</ui:composition>
 
-
-    </h:body>
 </html>
