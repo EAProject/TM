@@ -3,14 +3,14 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:f="http://java.sun.com/jsf/core"
-
       xmlns:p="http://primefaces.org/ui">
     <h:head>
         <title>Facelet Title</title>
+        <h:outputStylesheet name="style.css" />
     </h:head>
     <h:body>
         TM CHECKING
-        <h:form>
+        <h:form id="form">
             <p:panel header="Personal Details">
                 <h:panelGrid columns="2">
                     <h:outputText value="FirstName" />
@@ -33,6 +33,36 @@
                 <h:commandButton value="Show" action="#{teacherBean.showTeacherInfo}"/>
                 #{teacherBean.teachers.size()}
             </p:panel>
+            <br/>
+            <p:growl id="msgs" showDetail="true"/>
+
+            <p:dataTable id="teachers" var="teach" value="#{teacherBean.teachers}" editable="true" style="margin-bottom:20px">
+                <f:facet name="header">
+                    Row Editing
+                </f:facet>
+
+                <p:ajax event="rowEdit" listener="#{teacherBean.onRowEdit}" update=":form:msgs" />
+                <p:ajax event="rowEditCancel" listener="#{dtEditView.onRowCancel}" update=":form:msgs" />
+
+                <p:column headerText="Id">
+                    <p:cellEditor>
+                        <f:facet name="output"><h:outputText value="#{teach.id}" /></f:facet>
+                        <f:facet name="input"><p:inputText id="modelInput" value="#{teach.id}" style="width:100%"/></f:facet>
+                    </p:cellEditor>
+                </p:column>
+
+                <p:column headerText="FullName">
+                    <p:cellEditor>
+                        <f:facet name="output"><h:outputText value="#{teach.firstName}" /></f:facet>
+                        <f:facet name="input"><p:inputText value="#{teach.firstName}" style="width:100%" /></f:facet>
+                    </p:cellEditor>
+                </p:column>
+
+
+                <p:column style="width:32px">
+                    <p:rowEditor />
+                </p:column>
+            </p:dataTable>
         </h:form>
     </h:body>
 </html>
