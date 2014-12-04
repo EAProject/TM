@@ -5,8 +5,11 @@
  */
 package com.tm.controller;
 
+import com.tm.ejb.StudentFacade;
+import com.tm.ejb.StudentFacadeLocal;
 import com.tm.ejb.TeacherFacadeLocal;
 import com.tm.ejb.TeamcheckingFacadeLocal;
+import com.tm.entities.Student;
 import com.tm.entities.Teacher;
 import com.tm.entities.Teamchecking;
 import java.io.Serializable;
@@ -53,6 +56,8 @@ public class StudentAppointment implements Serializable{
     private TeamcheckingFacadeLocal teamcheckingFacadeLocal;
     @EJB
     private TeacherFacadeLocal teacherFacadeLocal;
+    @EJB
+    private StudentFacadeLocal studentFacadeLocal;
     List<Teamchecking> teamcheckings;
     private Date hourMinuteSchedule;
     private String test="AAA";
@@ -71,8 +76,7 @@ public class StudentAppointment implements Serializable{
     public void init() {
         eventModel = new DefaultScheduleModel();        
         teamcheckings = new ArrayList<>();
-        teamcheckings = teamcheckingFacadeLocal.findAll();        
-        System.out.println("Size is >> " + teamcheckings.size());
+        teamcheckings = teamcheckingFacadeLocal.findAll();  
         for (Teamchecking teamchecking : teamcheckings) {
             Date tmStartDate = null;
             Date tmEndDate = null;
@@ -83,7 +87,8 @@ public class StudentAppointment implements Serializable{
                 } catch (ParseException ex) {
                     Logger.getLogger(ScheduleView.class.getName()).log(Level.SEVERE, null, ex);
                 }
-                eventModel.addEvent(new DefaultScheduleEvent(teamchecking.getNote(), tmStartDate, tmEndDate,teamchecking.getFromHours()));
+                    
+                eventModel.addEvent(new DefaultScheduleEvent(teamchecking.getNote(), tmStartDate, tmEndDate,teamchecking.getId()));
             }
             
         }
@@ -105,8 +110,6 @@ public class StudentAppointment implements Serializable{
     }
 
     public ScheduleModel getEventModel() {
-        System.out.println("EVENT MODEL IS>> " + eventModel);
-        System.out.println("ID IS "+event.getData());
         return eventModel;
     }
 
@@ -130,43 +133,24 @@ public class StudentAppointment implements Serializable{
         this.event = event;
     }
 
-    public String convertStartDate() {
-        String date = "Thu Dec 04 00:00:00 CST 2014";
-        String[] startDateSeparate = date.split(" ");
-
-        String tmStartDate = startDateSeparate[1] + " " + startDateSeparate[2] + "," + " " + startDateSeparate[5];
-        return "";
-    }
 
     public void addEvent(ActionEvent actionEvent) {
-         System.out.println("Title min >>>>>>>>>>>>>>>"+event.getTitle());
         System.out.println("EVENT ID min >>>>>>>>>>>>>>>"+event.getData());
         
-        Date date1 = event.getStartDate();
-        DateFormat df = new SimpleDateFormat("MMMM d, yyyy");
-        String startDate = df.format(date1);
-        Date date2 = event.getEndDate();
-        DateFormat dfEnd = new SimpleDateFormat("MMMM d, yyyy");
-        String endDate = dfEnd.format(date2);
+      
 
         HttpSession session = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(true);
         int teacherId = (int) session.getAttribute("userId");
-        System.out.println("Teacher iD is " + teacherId);
-        Teacher teacher = teacherFacadeLocal.find(teacherId);
-        System.out.println("Teacher Name is " + teacher.getFirstName());
+        int studentId=1;
+        Student student = studentFacadeLocal.find(studentId);
+        System.out.println("STUDENT IS>>>>>>>>>>>>>>>>>> ");
+        System.out.println("Teacher Name is " + student.getFirstName());
 
         Teamchecking teamchecking = new Teamchecking();
-        teamchecking.setChecked(Boolean.FALSE);
-        teamchecking.setCheckingStartTime(startDate);
-        teamchecking.setCheckingEndTime(endDate);
-        teamchecking.setTeacherId(teacher);
-       // teamchecking.setCurrentTime(hourMinuteSchedule);
-        teamchecking.setFromHours((Date) event.getData());
-        teamchecking.setNote(event.getTitle());
-        teamchecking.setPending(Boolean.TRUE);
-        System.out.println("IN CREATE SCHEDULE");
-        teamchecking.setCalendarId(event.getId());
-        teamcheckingFacadeLocal.create(teamchecking);
+        teamchecking.setStudentId(student);
+        teamchecking.setPending(Boolean.FALSE);
+        teamcheckingFacadeLocal.edit(teamchecking);
+        System.out.println("IS FINISHED");
         if (event.getId() == null) {
             eventModel.addEvent(event);
         } else {

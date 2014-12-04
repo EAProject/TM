@@ -11,20 +11,21 @@
         <h:form>
             <p:growl id="messages" showDetail="true" />
             <h:panelGrid columnClasses="value">
-                <h3 style="margin-top: 0">Editable Schedule</h3>
+                <h3 style="margin-top: 0">TM Schedule</h3>
                 <p:schedule id="schedule" value="#{studentAppointment.eventModel}"  aspectRatio="3" widgetVar="myschedule" timeZone="CST">
                     <!--<p:ajax event="dateSelect" listener="{studentAppointment.onDateSelect}" update="eventDetails" oncomplete="PF('eventDialog').show();" />-->
                     <p:ajax event="eventSelect" listener="#{studentAppointment.onEventSelect}" update="eventDetails" oncomplete="PF('eventDialog').show();" />
-                    <p:ajax event="eventMove" listener="#{studentAppointment.onEventMove}" update="messages" />
-                    <p:ajax event="eventResize" listener="#{studentAppointment.onEventResize}" update="messages" />
+                    <!--<p:ajax event="eventMove" listener="{studentAppointment.onEventMove}" update="messages" />-->
+                    <!--<p:ajax event="eventResize" listener="{studentAppointment.onEventResize}" update="messages" />-->
                 </p:schedule>
             </h:panelGrid>
 
             <p:dialog widgetVar="eventDialog" header="Event Details" showEffect="clip" hideEffect="clip">
                 <h:panelGrid id="eventDetails" columns="2">
-                    <h:outputLabel for="title" value="Title:" />
-                    
-                    <p:outputLabel id="title" value="#{studentAppointment.event.title}" />
+                   <p:outputLabel for="time" value="Time:" />
+                     <h:outputLabel id="time" value="#{studentAppointment.event.data}" >
+                        <f:convertDateTime pattern="HH:mm a" timeZone="CST"/>
+                    </h:outputLabel>
 
                     <h:outputLabel for="from" value="From:" />
                     <h:outputLabel id="from" value="#{studentAppointment.event.startDate}" >
@@ -35,11 +36,13 @@
                     <h:outputLabel id="to" value="#{studentAppointment.event.endDate}" >
                         <f:convertDateTime pattern="dd/MM/yyyy" timeZone="CST"/>
                     </h:outputLabel>
+                    <h:outputText />
+                    <h:inputHidden value="#{studentAppointment.event.data}"/>
 
-                    <p:outputLabel for="time" value="Time:" />
-                     <h:outputLabel id="time" value="#{studentAppointment.event.data}" >
+<!--                    <p:outputLabel for="time" value="Time:" />
+                     <h:outputLabel id="time" value="{studentAppointment.event.data}" >
                         <f:convertDateTime pattern="HH:mm a" timeZone="CST"/>
-                    </h:outputLabel>
+                    </h:outputLabel>-->
                     <p:commandButton id="addButton" value="Accept" actionListener="#{studentAppointment.addEvent}" oncomplete="PF('myschedule').update();PF('eventDialog').hide();" />
                 </h:panelGrid>
             </p:dialog>   
