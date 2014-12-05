@@ -27,5 +27,24 @@ public class TeamcheckingFacade extends AbstractFacade<Teamchecking> implements 
     public TeamcheckingFacade() {
         super(Teamchecking.class);
     }
+
+    @Override
+    public boolean Update(Teamchecking teamchecking, Object data) {
+        try {
+            System.out.println("FIND IN FACADE "+data);
+            Teamchecking tmChecking=em.find(Teamchecking.class,Integer.parseInt((String)data));
+            System.out.println(">>>>>>>>>>>");
+            System.out.println("FIND TM CHECKING "+tmChecking.getId());
+            System.out.println("STUDENT NAME IS:: "+teamchecking.getStudentId()+" ::::: "+teamchecking.getPending());
+            tmChecking.setStudentId(teamchecking.getStudentId());
+            tmChecking.setPending(Boolean.FALSE);
+            em.merge(tmChecking);
+            return true;
+        } catch (Exception e) {
+            System.out.println("Some error while updating Teamchecking");
+            e.printStackTrace();
+        }
+        return false;
+    }
     
 }

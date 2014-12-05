@@ -28,6 +28,7 @@ public interface TeacherFacadeLocal {
 
     List<Teacher> findRange(int[] range);
 
-    int count();
+    int count();    
+    
     
 }

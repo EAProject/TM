@@ -30,4 +30,6 @@ public interface TeamcheckingFacadeLocal {
 
     int count();
     
+    public boolean Update(Teamchecking teamchecking, Object data);
+    
 }
