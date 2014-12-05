@@ -59,24 +59,14 @@ public class StudentAppointment implements Serializable{
     @EJB
     private StudentFacadeLocal studentFacadeLocal;
     List<Teamchecking> teamcheckings;
-    private Date hourMinuteSchedule;
-    private String test="AAA";
-
-    public String getTest() {
-        return test;
-    }
-
-    public void setTest(String test) {
-        this.test = test;
-    }
-    
-    
+    private Date hourMinuteSchedule;    
 
     @PostConstruct
     public void init() {
         eventModel = new DefaultScheduleModel();        
         teamcheckings = new ArrayList<>();
-        teamcheckings = teamcheckingFacadeLocal.findAll();  
+        teamcheckings = teamcheckingFacadeLocal.findAll(); 
+        System.out.println("SIZE IS >> "+teamcheckings.size());
         for (Teamchecking teamchecking : teamcheckings) {
             Date tmStartDate = null;
             Date tmEndDate = null;
@@ -86,27 +76,12 @@ public class StudentAppointment implements Serializable{
                         tmEndDate = new SimpleDateFormat("MMMM d, yyyy").parse(teamchecking.getCheckingEndTime());
                 } catch (ParseException ex) {
                     Logger.getLogger(ScheduleView.class.getName()).log(Level.SEVERE, null, ex);
-                }
-                    
+                }                    
                 eventModel.addEvent(new DefaultScheduleEvent(teamchecking.getNote(), tmStartDate, tmEndDate,teamchecking.getId()));
-            }
-            
+            }            
         }
     }
 
-//    public Date getRandomDate(Date base) {
-//        Calendar date = Calendar.getInstance();
-//        date.setTime(base);
-//        date.add(Calendar.DATE, ((int) (Math.random() * 30)) + 1);    //set random day of month
-//        return date.getTime();
-//    }
-
-//    public Date getInitialDate() {
-//        Calendar calendar = Calendar.getInstance();
-//        calendar.set(calendar.get(Calendar.YEAR), Calendar.FEBRUARY, calendar.get(Calendar.DATE), 0, 0, 0);
-//
-//        return calendar.getTime();
-//    }
 
     public ScheduleModel getEventModel() {
         return eventModel;
@@ -115,12 +90,6 @@ public class StudentAppointment implements Serializable{
     public ScheduleModel getLazyEventModel() {
         return lazyEventModel;
     }
-
-//    private Calendar today() {
-//        Calendar calendar = Calendar.getInstance();
-//        calendar.set(calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DATE), 0, 0, 0);
-//        return calendar;
-//    }
 
     public ScheduleEvent getEvent() {
         return event;
@@ -147,7 +116,9 @@ public class StudentAppointment implements Serializable{
              message = new FacesMessage(FacesMessage.SEVERITY_INFO,null, "Problem while selecting date ");
              addMessage(message);
         }
-     
+        System.out.println("RETURN>>");
+        init();
+    //  return "studentTMDate?faces-redirect=true"; 
     }
 
     public void onEventSelect(SelectEvent selectEvent) {

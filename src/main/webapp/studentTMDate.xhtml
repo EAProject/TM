@@ -9,6 +9,7 @@
     <ui:composition template="/main_template.xhtml">
         <ui:define name="body">
         <h:form>
+            <h:outputText value="#{studentAppointment.count}"/>
             <p:growl id="messages" showDetail="true" />
             <h:panelGrid columnClasses="value">
                 <h3 style="margin-top: 0">TM Schedule</h3>
@@ -38,11 +39,6 @@
                     </h:outputLabel>
                     <h:outputText />
                     <h:inputHidden value="#{studentAppointment.event.data}"/>
-
-<!--                    <p:outputLabel for="time" value="Time:" />
-                     <h:outputLabel id="time" value="{studentAppointment.event.data}" >
-                        <f:convertDateTime pattern="HH:mm a" timeZone="CST"/>
-                    </h:outputLabel>-->
                     <p:commandButton id="addButton" value="Accept" actionListener="#{studentAppointment.addEvent}" oncomplete="PF('myschedule').update();PF('eventDialog').hide();" />
                 </h:panelGrid>
             </p:dialog>   
