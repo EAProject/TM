@@ -6,9 +6,12 @@
 package com.tm.ejb;
 
 import com.tm.entities.Teamchecking;
+import java.util.ArrayList;
+import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 
 /**
  *
@@ -45,6 +48,22 @@ public class TeamcheckingFacade extends AbstractFacade<Teamchecking> implements 
             e.printStackTrace();
         }
         return false;
+    }
+
+    @Override
+    public List<Teamchecking> findByStudentChecking() {
+        try {
+            List<Teamchecking> teamcheckings=new ArrayList<>();
+            Query query=em.createNativeQuery("SELECT student_id, COUNT(*) FROM teamchecking WHERE pending=0 GROUP BY student_id");
+            //Query query=em.createQuery("SELECT t.student_id, COUNT(*) FROM teamchecking t WHERE t.pending=0 GROUP BY t.student_id");
+            teamcheckings=query.getResultList();
+            System.out.println("Size in facade is "+teamcheckings.size());
+            return teamcheckings;
+        } catch (Exception e) {
+            System.out.println("Exception here");
+            e.printStackTrace();
+        }
+        return null;
     }
     
 }
