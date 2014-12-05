@@ -5,6 +5,8 @@
  */
 package com.tm.controller;
 
+import com.tm.ejb.UserFacadeLocal;
+import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
@@ -21,9 +23,15 @@ public class LoginManaged {
     private String username;
     private String password;
     private String errorMessage;
+    @EJB
+    private UserFacadeLocal facadeLocal;
 
     public String checkLogin() {
         System.out.println("User type is " + username);
+        System.out.println("SIZE IS>>>>>>>>>>>>>>>> "+ facadeLocal.getAllUser());
+        System.out.println("END");
+       
+        
         if (username.equalsIgnoreCase("admin") && password.equals("admin")) {
             HttpSession session = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(true);
             session.setAttribute("userId", 2);
