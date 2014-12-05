@@ -94,20 +94,19 @@ public class StudentAppointment implements Serializable{
         }
     }
 
-    public Date getRandomDate(Date base) {
-        System.out.println("GET RANDOM DATE");
-        Calendar date = Calendar.getInstance();
-        date.setTime(base);
-        date.add(Calendar.DATE, ((int) (Math.random() * 30)) + 1);    //set random day of month
-        return date.getTime();
-    }
+//    public Date getRandomDate(Date base) {
+//        Calendar date = Calendar.getInstance();
+//        date.setTime(base);
+//        date.add(Calendar.DATE, ((int) (Math.random() * 30)) + 1);    //set random day of month
+//        return date.getTime();
+//    }
 
-    public Date getInitialDate() {
-        Calendar calendar = Calendar.getInstance();
-        calendar.set(calendar.get(Calendar.YEAR), Calendar.FEBRUARY, calendar.get(Calendar.DATE), 0, 0, 0);
-
-        return calendar.getTime();
-    }
+//    public Date getInitialDate() {
+//        Calendar calendar = Calendar.getInstance();
+//        calendar.set(calendar.get(Calendar.YEAR), Calendar.FEBRUARY, calendar.get(Calendar.DATE), 0, 0, 0);
+//
+//        return calendar.getTime();
+//    }
 
     public ScheduleModel getEventModel() {
         return eventModel;
@@ -117,13 +116,11 @@ public class StudentAppointment implements Serializable{
         return lazyEventModel;
     }
 
-    private Calendar today() {
-        Calendar calendar = Calendar.getInstance();
-        System.out.println("Calendar Today " + calendar.get(Calendar.YEAR) + ":::" + calendar.get(Calendar.MONTH) + "::" + calendar.get(Calendar.DATE));
-        calendar.set(calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DATE), 0, 0, 0);
-
-        return calendar;
-    }
+//    private Calendar today() {
+//        Calendar calendar = Calendar.getInstance();
+//        calendar.set(calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DATE), 0, 0, 0);
+//        return calendar;
+//    }
 
     public ScheduleEvent getEvent() {
         return event;
@@ -135,43 +132,33 @@ public class StudentAppointment implements Serializable{
 
 
     public void addEvent(ActionEvent actionEvent) {
-        System.out.println("EVENT ID min >>>>>>>>>>>>>>>"+event.getData());
-        
-      
-
-        HttpSession session = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(true);
-        int teacherId = (int) session.getAttribute("userId");
+        //HttpSession session = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(true);
+        //int teacherId = (int) session.getAttribute("userId");
         int studentId=1;
         Student student = studentFacadeLocal.find(studentId);
-        System.out.println("STUDENT IS>>>>>>>>>>>>>>>>>> ");
-        System.out.println("Teacher Name is " + student.getFirstName());
-
         Teamchecking teamchecking = new Teamchecking();
-        teamchecking.setStudentId(student);
-        teamchecking.setPending(Boolean.FALSE);
-        teamcheckingFacadeLocal.edit(teamchecking);
-        System.out.println("IS FINISHED");
-        if (event.getId() == null) {
-            eventModel.addEvent(event);
+        teamchecking.setStudentId(student);        
+        boolean checkUpdate=teamcheckingFacadeLocal.Update(teamchecking,event.getData());
+        FacesMessage message;
+        if (checkUpdate == true) {
+            message = new FacesMessage(FacesMessage.SEVERITY_INFO,null, "Selected date successfully");
+            addMessage(message);
         } else {
-            eventModel.updateEvent(event);
+             message = new FacesMessage(FacesMessage.SEVERITY_INFO,null, "Problem while selecting date ");
+             addMessage(message);
         }
-        event = new DefaultScheduleEvent();
+     
     }
 
     public void onEventSelect(SelectEvent selectEvent) {
-        System.out.println("EVENT SELECT");
-         System.out.println("ID IS "+event.getData());
         event = (ScheduleEvent) selectEvent.getObject();
     }
 
     public void onDateSelect(SelectEvent selectEvent) {
-        System.out.println(">>>>>>>>>>>>> " + event.getData());
         event = new DefaultScheduleEvent("", (Date) selectEvent.getObject(), (Date) selectEvent.getObject());
     }
 
     public void onEventMove(ScheduleEntryMoveEvent event) {
-         System.out.println("ONEVENT MODE>>>>>> "+event);
         FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Event moved", "Day delta:" + event.getDayDelta() + ", Minute delta:" + event.getMinuteDelta());
         addMessage(message);
     }
@@ -192,7 +179,4 @@ public class StudentAppointment implements Serializable{
     public void setHourMinuteSchedule(Date hourMinuteSchedule) {
         this.hourMinuteSchedule = hourMinuteSchedule;
     }
-
-    
-    
 }
