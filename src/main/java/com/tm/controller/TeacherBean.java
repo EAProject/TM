@@ -6,9 +6,13 @@
 package com.tm.controller;
 
 import com.tm.ejb.TeacherFacadeLocal;
+import com.tm.ejb.UserFacadeLocal;
 import com.tm.entities.Teacher;
+import com.tm.entities.User;
+import com.tm.utils.TMRole;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.ResourceBundle;
 import javax.ejb.EJB;
@@ -30,6 +34,8 @@ public class TeacherBean implements Serializable {
     private TeacherFacadeLocal teacherFacadeLocal;
     Teacher teacher = new Teacher();
     List<Teacher> teachers = new ArrayList<Teacher>();
+    @EJB
+    private UserFacadeLocal userFacadeLocal;
     
    
 
@@ -80,10 +86,25 @@ public class TeacherBean implements Serializable {
         System.out.println("SHOW TEACHER INFO " + teachers.size());
         return "index";
     }
+    
+    public void addUser(Teacher t){
+        User user=new User();
+        user.setEmail(t.getEmail());
+        user.setPassword(t.getPassword());
+        TMRole role=TMRole.TEACHER;
+        System.out.println("ROLE IS "+role.getTmRole());
+        user.setRole(role.getTmRole());
+        user.setStatus(0);
+        user.setIsDeleted(Boolean.FALSE);
+        //user.setCreatedDate(new Date());
+        System.out.println("Is here");
+        userFacadeLocal.create(user);
+    }
 
     public String addTeacher() {
         teacher.setIsDeleted(false);
         teacherFacadeLocal.create(teacher);
+        addUser(teacher);        
         clearTeacherValue();
         return "success";
     }
