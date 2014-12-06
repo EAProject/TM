@@ -83,8 +83,8 @@ public class TeacherBean implements Serializable {
     public String showTeacherInfo() {
         System.out.println("Inside method");
         teachers = teacherFacadeLocal.findAll();
-        System.out.println("SHOW TEACHER INFO " + teachers.size());
-        return "createTeacher";
+       //return "createTeacher";       
+       return "createTeacher?faces-redirect=true";
     }
     
     public void addUser(Teacher t){
@@ -105,7 +105,12 @@ public class TeacherBean implements Serializable {
         teacherFacadeLocal.create(teacher);
         addUser(teacher);        
         clearTeacherValue();
-        return "success";
+        try {
+            teachers = teacherFacadeLocal.findAll();
+        } catch (NullPointerException e) {
+        }
+        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Successfully create teacher having email "+teacher.getEmail()));
+        return "createTeacher?faces-redirect=true";
     }
 
     public void clearTeacherValue() {

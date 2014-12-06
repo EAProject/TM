@@ -30,15 +30,17 @@
                     </f:facet>
                 </h:panelGrid>    
                 <br/>
-                <h:commandButton value="Show" action="#{teacherBean.showTeacherInfo}"/>
-                #{teacherBean.teachers.size()}
+                <!--<h:commandButton value="Show" action="{teacherBean.showTeacherInfo}"/>-->
+                
             </p:panel>
             <br/>
             <p:growl id="msgs" showDetail="true"/>
 
-            <p:dataTable id="teachers" var="teach" value="#{teacherBean.teachers}" editable="true" style="margin-bottom:20px">
+            <p:dataTable id="teachers" var="teach" value="#{teacherBean.teachers}" editable="true" style="margin-bottom:20px"
+            rows="10" paginator="true" paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+            rowsPerPageTemplate="5,10,15" >
                 <f:facet name="header">
-                    Row Editing
+                    Teacher Editing
                 </f:facet>
 
                 <p:ajax event="rowEdit" listener="#{teacherBean.onRowEdit}" update=":form:msgs" />
@@ -51,10 +53,22 @@
                     </p:cellEditor>
                 </p:column>
 
-                <p:column headerText="FullName">
+                <p:column headerText="FIRSTNAME">
                     <p:cellEditor>
                         <f:facet name="output"><h:outputText value="#{teach.firstName}" /></f:facet>
                         <f:facet name="input"><p:inputText value="#{teach.firstName}" style="width:100%" /></f:facet>
+                    </p:cellEditor>
+                </p:column>
+                <p:column headerText="LASTNAME">
+                    <p:cellEditor>
+                        <f:facet name="output"><h:outputText value="#{teach.lastName}" /></f:facet>
+                        <f:facet name="input"><p:inputText value="#{teach.lastName}" style="width:100%" /></f:facet>
+                    </p:cellEditor>
+                </p:column>
+                <p:column headerText="ContactNumber">
+                    <p:cellEditor>
+                        <f:facet name="output"><h:outputText value="#{teach.contactNumber}" /></f:facet>
+                        <f:facet name="input"><p:inputText value="#{teach.contactNumber}" style="width:100%" /></f:facet>
                     </p:cellEditor>
                 </p:column>
 
