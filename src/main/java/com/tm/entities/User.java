@@ -69,6 +69,9 @@ public class User implements Serializable {
     @ManyToOne(fetch=FetchType.LAZY)
     @JoinColumn(name = "teacher_id")
     private Teacher teacher;
+    @ManyToOne(fetch=FetchType.LAZY)
+    @JoinColumn(name = "student_id")
+    private Student student;
 
     public User() {
     }
@@ -165,6 +168,15 @@ public class User implements Serializable {
     public void setTeacher(Teacher teacher) {
         this.teacher = teacher;
     }
+
+    public Student getStudent() {
+        return student;
+    }
+
+    public void setStudent(Student student) {
+        this.student = student;
+    }
+    
     
 
 }

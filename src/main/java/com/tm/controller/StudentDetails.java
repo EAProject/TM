@@ -5,14 +5,22 @@
  */
 package com.tm.controller;
 
+import com.tm.ejb.StudentFacadeLocal;
 import com.tm.ejb.TeamcheckingFacadeLocal;
+import com.tm.ejb.UserFacadeLocal;
+import com.tm.entities.Student;
 import com.tm.entities.Teamchecking;
+import com.tm.entities.User;
+import com.tm.utils.TMRole;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import javax.ejb.EJB;
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
+import javax.faces.context.FacesContext;
 
 /**
  *
@@ -24,6 +32,11 @@ public class StudentDetails implements Serializable{
     List<Teamchecking> teamcheckings=new ArrayList<>();
     @EJB
     private TeamcheckingFacadeLocal teamcheckingFacadeLocal;
+    private Student student=new Student();
+    @EJB
+    private StudentFacadeLocal studentFacadeLocal;
+    @EJB
+    private UserFacadeLocal userFacadeLocal;
     
     public String studentTMCheckingDetails(){
         teamcheckings=teamcheckingFacadeLocal.findByStudentChecking();
@@ -46,6 +59,43 @@ public class StudentDetails implements Serializable{
 //        }
         return "studentTmCheckingDetails";
     }
+      public void addUser(Student s){
+        User user=new User();
+        user.setEmail(s.getEmail());
+        user.setPassword(s.getPassword());
+        TMRole role=TMRole.STUDENT;
+        user.setRole(role.getTmRole());
+        user.setStatus(0);
+        user.setIsDeleted(Boolean.FALSE);
+        user.setCreatedDate(new Date());
+        user.setStudent(s);
+        userFacadeLocal.create(user);
+    }
+    public String addTeacher() {
+        student.setIsDeleted(false);
+        studentFacadeLocal.create(student);
+        
+        addUser(student);        
+        clearStudentValue();
+//        try {
+//            teachers = teacherFacadeLocal.findAll();
+//        } catch (NullPointerException e) {
+//        }
+        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Successfully create teacher having email "+student.getEmail()));
+        return "createTeacher?faces-redirect=true";
+    }
+     public void clearStudentValue() {
+        student.setFirstName("");
+        student.setMiddleName("");
+        student.setLastName("");
+        student.setEmail("");
+    }
+     public String showStudentInfo() {
+        System.out.println("Inside method");
+        //teachers = teacherFacadeLocal.findAll();
+       //return "createTeacher";       
+       return "createStudent?faces-redirect=true";
+    }
 
     public List<Teamchecking> getTeamcheckings() {
         return teamcheckings;
@@ -54,5 +104,16 @@ public class StudentDetails implements Serializable{
     public void setTeamcheckings(List<Teamchecking> teamcheckings) {
         this.teamcheckings = teamcheckings;
     }
+
+    public Student getStudent() {
+        return student;
+    }
+
+    public void setStudent(Student student) {
+        this.student = student;
+    }
+    
+    
+    
     
 }
