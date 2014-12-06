@@ -9,22 +9,22 @@
     <ui:composition template="/main_template.xhtml">
         <ui:define name="body">
 
-        Create Teacher
-        <h:form>
+       Create Student
+        <h:form id="form">
             <p:panel header="Personal Details">
                 <h:panelGrid columns="2">
                     <h:outputText value="FirstName" />
-                    <h:inputText value="#{studentDetails.student.firstName}" />  
+                    <h:inputText value="#{teacherBean.teacher.firstName}" />  
                     <h:outputText value="MiddleName" />
-                    <h:inputText value="#{studentDetails.student.middleName}" />                 
+                    <h:inputText value="#{teacherBean.teacher.middleName}" />                 
                     <h:outputText value="LastName" />
-                    <h:inputText value="#{studentDetails.student.lastName}" />
+                    <h:inputText value="#{teacherBean.teacher.lastName}" />
                     <h:outputText value="Email" />
-                    <h:inputText value="#{studentDetails.student.email}" />
+                    <h:inputText value="#{teacherBean.teacher.email}" />
                     <h:outputText value="Password" />
-                    <h:inputSecret value="#{studentDetails.student.password}" />
+                    <h:inputSecret value="#{teacherBean.teacher.password}" />
                     <h:outputText value="ContactNumber" />
-                    <h:inputText value="#{studentDetails.student.contactNumber}" />
+                    <h:inputText value="#{teacherBean.teacher.contactNumber}" />
                     <f:facet name="footer">
                         <h:commandButton value="Add" action="#{teacherBean.addTeacher}"/>
                     </f:facet>
@@ -33,7 +33,50 @@
                 <!--<h:commandButton value="Show" action="{teacherBean.showTeacherInfo}"/>-->
                 
             </p:panel>
-            
+            <br/>
+            <p:growl id="msgs" showDetail="true"/>
+
+            <p:dataTable id="teachers" var="teach" value="#{teacherBean.teachers}" editable="true" style="margin-bottom:20px"
+            rows="10" paginator="true" paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+            rowsPerPageTemplate="5,10,15" >
+                <f:facet name="header">
+                    Teacher Editing
+                </f:facet>
+
+                <p:ajax event="rowEdit" listener="#{teacherBean.onRowEdit}" update=":form:msgs" />
+                <p:ajax event="rowEditCancel" listener="#{teacherBean.onRowCancel}" update=":form:msgs" />
+
+                <p:column headerText="Id">
+                    <p:cellEditor>
+                        <f:facet name="output"><h:outputText value="#{teach.id}" /></f:facet>
+                        <f:facet name="input"><p:inputText id="modelInput" value="#{teach.id}" style="width:100%"/></f:facet>
+                    </p:cellEditor>
+                </p:column>
+
+                <p:column headerText="FIRSTNAME">
+                    <p:cellEditor>
+                        <f:facet name="output"><h:outputText value="#{teach.firstName}" /></f:facet>
+                        <f:facet name="input"><p:inputText value="#{teach.firstName}" style="width:100%" /></f:facet>
+                    </p:cellEditor>
+                </p:column>
+                <p:column headerText="LASTNAME">
+                    <p:cellEditor>
+                        <f:facet name="output"><h:outputText value="#{teach.lastName}" /></f:facet>
+                        <f:facet name="input"><p:inputText value="#{teach.lastName}" style="width:100%" /></f:facet>
+                    </p:cellEditor>
+                </p:column>
+                <p:column headerText="ContactNumber">
+                    <p:cellEditor>
+                        <f:facet name="output"><h:outputText value="#{teach.contactNumber}" /></f:facet>
+                        <f:facet name="input"><p:inputText value="#{teach.contactNumber}" style="width:100%" /></f:facet>
+                    </p:cellEditor>
+                </p:column>
+
+
+                <p:column style="width:32px">
+                    <p:rowEditor />
+                </p:column>
+            </p:dataTable>
         </h:form>
         </ui:define>
         </ui:composition>
