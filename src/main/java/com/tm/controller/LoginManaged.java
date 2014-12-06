@@ -32,7 +32,7 @@ public class LoginManaged {
         if(user!=null){
            if(user.getPassword().equals(password)){
                System.out.println("Logged in successfully");
-                 return "teacherHome";
+                 return "home";
            }else{
                 System.out.println("Invalid login..");
            }
