@@ -84,7 +84,7 @@ public class TeacherBean implements Serializable {
         System.out.println("Inside method");
         teachers = teacherFacadeLocal.findAll();
         System.out.println("SHOW TEACHER INFO " + teachers.size());
-        return "index";
+        return "createTeacher";
     }
     
     public void addUser(Teacher t){
@@ -92,12 +92,11 @@ public class TeacherBean implements Serializable {
         user.setEmail(t.getEmail());
         user.setPassword(t.getPassword());
         TMRole role=TMRole.TEACHER;
-        System.out.println("ROLE IS "+role.getTmRole());
         user.setRole(role.getTmRole());
         user.setStatus(0);
         user.setIsDeleted(Boolean.FALSE);
-        //user.setCreatedDate(new Date());
-        System.out.println("Is here");
+        user.setCreatedDate(new Date());
+        user.setTeacher(t);
         userFacadeLocal.create(user);
     }
 
