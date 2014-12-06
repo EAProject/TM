@@ -42,19 +42,8 @@ public class StudentDetails implements Serializable {
     private UserFacadeLocal userFacadeLocal;
     List<Student> students = new ArrayList<Student>();
 
-    public StudentDetails() {
-        System.out.println("Inside the constructor::");
-        try {
-            students = studentFacadeLocal.findAll();
-        } catch (NullPointerException e) {
-            System.out.println("Null pointer except");
-        }
-    }
-
     public String studentTMCheckingDetails() {
         teamcheckings = teamcheckingFacadeLocal.findByStudentChecking();
-        System.out.println("Size is>>> " + teamcheckings.size());
-
         for (int i = 0; i < teamcheckings.size(); i++) {
             Teamchecking teamchecking = teamcheckings.get(i);
             System.out.println("ID IS " + teamchecking.getId());
@@ -79,16 +68,10 @@ public class StudentDetails implements Serializable {
 
     public String addStudent() {
         student.setIsDeleted(false);
-        System.out.println("Student email is " + student.getEmail());
-        System.out.println("Student last is " + student.getLastName());
-        System.out.println("Student first is " + student.getFirstName());
-
         studentFacadeLocal.create(student);
-
         addUser(student);
         try {
             students = studentFacadeLocal.findAll();
-            System.out.println("Size is "+students.size());
         } catch (NullPointerException e) {
         }
         clearStudentValue();
@@ -104,10 +87,15 @@ public class StudentDetails implements Serializable {
     }
 
     public String showStudentInfo() {
-        //teachers = teacherFacadeLocal.findAll();
-        return "createStudent";       
-        //return "createStudent?faces-redirect=true";
+        System.out.println("Inside the LIST::");
+        try {
+            students = studentFacadeLocal.findAll();
+        } catch (NullPointerException e) {
+            System.out.println("Null pointer exception");
+        }
+        return "createStudent";
     }
+
     public void onStudentRowEdit(RowEditEvent event) {
         try {
             Student stud = (Student) event.getObject();
@@ -123,6 +111,7 @@ public class StudentDetails implements Serializable {
             FacesContext.getCurrentInstance().addMessage(null, msg);
         }
     }
+
     public void onStudentRowCancel(RowEditEvent event) {
         try {
             Student stud = (Student) event.getObject();
@@ -160,6 +149,5 @@ public class StudentDetails implements Serializable {
     public void setStudents(List<Student> students) {
         this.students = students;
     }
-    
 
 }
