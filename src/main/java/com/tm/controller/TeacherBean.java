@@ -79,7 +79,7 @@ public class TeacherBean implements Serializable {
             FacesContext.getCurrentInstance().addMessage(null, msg);
         }
     }
-
+    
     public String showTeacherInfo() {
         System.out.println("Inside method");
         teachers = teacherFacadeLocal.findAll();
