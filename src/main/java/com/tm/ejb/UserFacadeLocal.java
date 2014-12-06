@@ -30,5 +30,5 @@ public interface UserFacadeLocal {
 
     int count();
     
-    public List<User> getAllUser();
+     public User checkUserName(String email); 
 }

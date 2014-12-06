@@ -8,6 +8,7 @@
     <class>com.tm.entities.Teacher</class>
     <class>com.tm.entities.Teamchecking</class>
     <class>com.tm.entities.Test</class>
+    <class>com.tm.entities.User</class>
     <exclude-unlisted-classes>true</exclude-unlisted-classes>
     <properties>
     </properties>

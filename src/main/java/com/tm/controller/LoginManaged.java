@@ -6,6 +6,7 @@
 package com.tm.controller;
 
 import com.tm.ejb.UserFacadeLocal;
+import com.tm.entities.User;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
@@ -27,11 +28,18 @@ public class LoginManaged {
     private UserFacadeLocal facadeLocal;
 
     public String checkLogin() {
-        System.out.println("User type is " + username);
-        System.out.println("SIZE IS>>>>>>>>>>>>>>>> "+ facadeLocal.getAllUser());
-        System.out.println("END");
-       
+        System.out.println("SIZE IS>>>>>>>>>>>>>>>> ");
         
+        User user=facadeLocal.checkUserName(username);
+        if(user!=null){
+           if(user.getPassword().equals(password)){
+               System.out.println("Logged in successfully");
+           }else{
+                System.out.println("Invalid login..");
+           }
+        }else{
+            System.out.println("Invalid login");
+        }
         if (username.equalsIgnoreCase("admin") && password.equals("admin")) {
             HttpSession session = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(true);
             session.setAttribute("userId", 2);

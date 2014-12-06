@@ -12,6 +12,7 @@ import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
+import sun.text.normalizer.UBiDiProps;
 
 /**
  *
@@ -32,19 +33,20 @@ public class UserFacade extends AbstractFacade<User> implements UserFacadeLocal 
     }
     
     @Override
-    public List<User> getAllUser() {
+    public User checkUserName(String email) {
         try {
-            System.out.println(">###>>>>>>>>>:::>>>>>>>>>>>>");
-            List<User> users=new ArrayList<>();
-            Query q=em.createNamedQuery("User.findAll");
-            System.out.println("AFTER QUERY "+q);
-            //q.setParameter("isDeleted", 0);
-            users=q.getResultList();
-            System.out.println("Size is "+users.size());
-            return users;
+             User user=new User();
+            //Query q=em.createNamedQuery("User.findByIsDeleted");
+             //WHERE  AND
+             Query q=em.createQuery("SELECT u FROM User u WHERE u.isDeleted = :isDeleted AND u.email = :email");
+             System.out.println(">>>>>>>>>>>>>>>");
+             q.setParameter("isDeleted", false); 
+             q.setParameter("email", email); 
+            user=(User) q.getSingleResult();
+            return user;
         } catch (Exception e) {
             System.out.println("EXCEPTION IN USERS LIST");
-            e.printStackTrace();
+            //e.printStackTrace();
         }
         return null;
     }
