@@ -54,10 +54,16 @@ public class TeamcheckingFacade extends AbstractFacade<Teamchecking> implements 
     public List<Teamchecking> findByStudentChecking() {
         try {
             List<Teamchecking> teamcheckings=new ArrayList<>();
-            Query query=em.createNativeQuery("SELECT student_id, COUNT(*) FROM teamchecking WHERE pending=0 GROUP BY student_id");
+            //Query query=em.createNativeQuery("SELECT student_id, COUNT(*) FROM teamchecking WHERE pending=0 GROUP BY student_id",Teamchecking.class);
+             Query query=em.createQuery("SELECT t FROM Teamchecking t");
+           
             //Query query=em.createQuery("SELECT t.student_id, COUNT(*) FROM teamchecking t WHERE t.pending=0 GROUP BY t.student_id");
-            teamcheckings=query.getResultList();
+            teamcheckings=(List<Teamchecking>)query.getResultList();
             System.out.println("Size in facade is "+teamcheckings.size());
+            for(Teamchecking t:teamcheckings){
+                System.out.println("::::::::::::::>> "+t);
+                System.out.println(":::::::::::::: "+t.getStudentId());
+            }
             return teamcheckings;
         } catch (Exception e) {
             System.out.println("Exception here");
