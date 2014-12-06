@@ -34,20 +34,21 @@ public class LoginManaged {
         if(user!=null){
            if(user.getPassword().equals(password)){
                System.out.println("Logged in successfully");
+                 return "teacherHome";
            }else{
                 System.out.println("Invalid login..");
            }
         }else{
             System.out.println("Invalid login");
         }
-        if (username.equalsIgnoreCase("admin") && password.equals("admin")) {
-            HttpSession session = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(true);
-            session.setAttribute("userId", 2);
-            return "teacherHome";
-        } else {
-            System.out.println("ERROR");
-            errorMessage = "Invalid Login";
-        }
+//        if (username.equalsIgnoreCase("admin") && password.equals("admin")) {
+//            HttpSession session = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(true);
+//            session.setAttribute("userId", 2);
+//            return "teacherHome";
+//        } else {
+//            System.out.println("ERROR");
+//            errorMessage = "Invalid Login";
+//        }
         return "login";
     }
 
