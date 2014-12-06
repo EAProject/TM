@@ -7,9 +7,11 @@ package com.tm.controller;
 
 import com.tm.ejb.UserFacadeLocal;
 import com.tm.entities.User;
+import java.io.IOException;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
+import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpSession;
 
@@ -28,17 +30,12 @@ public class LoginManaged {
     private UserFacadeLocal facadeLocal;
 
     public String checkLogin() {
-        System.out.println("SIZE IS>>>>>>>>>>>>>>>> ");
-
         User user = facadeLocal.checkUserName(username);
         if (user != null) {
             if (user.getPassword().equals(password)) {
-                System.out.println("Logged in successfully::::::: ");
                 int loggedInID = 0;
                 loggedInID = checkValidateMember(user);
-                System.out.println("VVVVVVVVVVVVVV " + loggedInID);
                 if (loggedInID != 0) {
-                    System.out.println("Logged in ID>> " + loggedInID);
                     HttpSession session = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(true);
                     session.setAttribute("userId", loggedInID);
                     return "home";
@@ -76,6 +73,13 @@ public class LoginManaged {
             System.out.println("EXCEPTION IN STUDENT ID");
         }
         return loggedInID;
+    }
+
+    public void logout() throws IOException {
+        ExternalContext ec = FacesContext.getCurrentInstance().getExternalContext();
+        ec.invalidateSession();
+        //ec.redirect(ec.getRequestContextPath() + "/login.xhtml");
+        ec.redirect("login.xhtml");
     }
 
     public String getUsername() {
