@@ -36,15 +36,12 @@ public class TeacherBean implements Serializable {
     List<Teacher> teachers = new ArrayList<Teacher>();
     @EJB
     private UserFacadeLocal userFacadeLocal;
-    
-   
 
     public TeacherBean() {
         try {
             teachers = teacherFacadeLocal.findAll();
         } catch (NullPointerException e) {
         }
-        System.out.println("Size is >>>>>>" + teachers.size());
 
     }
 
@@ -69,29 +66,26 @@ public class TeacherBean implements Serializable {
                 teacherFacadeLocal.edit(teacher);
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Updated Teacher"));
             } else {
-                System.out.println("ELSE");
                 FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_ERROR, ResourceBundle.getBundle("bundle").getString("msg.error.save"), "");
                 FacesContext.getCurrentInstance().addMessage(null, msg);
             }
         } catch (Exception ex) {
-            System.out.println("CATCH");
             FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_ERROR, ResourceBundle.getBundle("bundle").getString("msg.error.save"), "");
             FacesContext.getCurrentInstance().addMessage(null, msg);
         }
     }
-    
+
     public String showTeacherInfo() {
         System.out.println("Inside method");
         teachers = teacherFacadeLocal.findAll();
-       //return "createTeacher";       
-       return "createTeacher?faces-redirect=true";
+        return "createTeacher?faces-redirect=true";
     }
-    
-    public void addUser(Teacher t){
-        User user=new User();
+
+    public void addUser(Teacher t) {
+        User user = new User();
         user.setEmail(t.getEmail());
         user.setPassword(t.getPassword());
-        TMRole role=TMRole.TEACHER;
+        TMRole role = TMRole.TEACHER;
         user.setRole(role.getTmRole());
         user.setStatus(0);
         user.setIsDeleted(Boolean.FALSE);
@@ -103,13 +97,13 @@ public class TeacherBean implements Serializable {
     public String addTeacher() {
         teacher.setIsDeleted(false);
         teacherFacadeLocal.create(teacher);
-        addUser(teacher);        
+        addUser(teacher);
         clearTeacherValue();
         try {
             teachers = teacherFacadeLocal.findAll();
         } catch (NullPointerException e) {
         }
-        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Successfully create teacher having email "+teacher.getEmail()));
+        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Successfully create teacher having email " + teacher.getEmail()));
         return "createTeacher?faces-redirect=true";
     }
 

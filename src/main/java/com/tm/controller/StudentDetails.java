@@ -16,11 +16,13 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.ResourceBundle;
 import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
+import org.primefaces.event.RowEditEvent;
 
 /**
  *
@@ -28,42 +30,45 @@ import javax.faces.context.FacesContext;
  */
 @ManagedBean(name = "studentDetails")
 @SessionScoped
-public class StudentDetails implements Serializable{
-    List<Teamchecking> teamcheckings=new ArrayList<>();
+public class StudentDetails implements Serializable {
+
+    List<Teamchecking> teamcheckings = new ArrayList<>();
     @EJB
     private TeamcheckingFacadeLocal teamcheckingFacadeLocal;
-    private Student student=new Student();
+    private Student student = new Student();
     @EJB
     private StudentFacadeLocal studentFacadeLocal;
     @EJB
     private UserFacadeLocal userFacadeLocal;
-    
-    public String studentTMCheckingDetails(){
-        teamcheckings=teamcheckingFacadeLocal.findByStudentChecking();
-        System.out.println("Size is>>> "+teamcheckings.size());
-       
-        for(int i=0;i<teamcheckings.size();i++){
-           //tmcheckings.add(t);           
-            Teamchecking teamchecking=teamcheckings.get(i);
-           //System.out.println("Value is>>>>>>>>> "+teamcheckings.get(i));
-           System.out.println("ID IS "+teamchecking.getId());
-           // tmcheckings=(List<Teamchecking>) teamcheckings.get(i);
-            
+    List<Student> students = new ArrayList<Student>();
+
+    public StudentDetails() {
+        System.out.println("Inside the constructor::");
+        try {
+            students = studentFacadeLocal.findAll();
+        } catch (NullPointerException e) {
+            System.out.println("Null pointer except");
         }
-//        System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>");
-//           for(Teamchecking t:tmcheckings){
-//               System.out.println("IS HERE");        
-//        }
-//        for(int i=0;i<teamcheckings.size();i++){
-//            System.out.println("TEAM CHECKING:: "+teamcheckings.get(i).getId());
-//        }
+    }
+
+    public String studentTMCheckingDetails() {
+        teamcheckings = teamcheckingFacadeLocal.findByStudentChecking();
+        System.out.println("Size is>>> " + teamcheckings.size());
+
+        for (int i = 0; i < teamcheckings.size(); i++) {
+            Teamchecking teamchecking = teamcheckings.get(i);
+            System.out.println("ID IS " + teamchecking.getId());
+
+        }
         return "studentTmCheckingDetails";
     }
-      public void addUser(Student s){
-        User user=new User();
+
+    public void addUser(Student s) {
+        System.out.println("EMAIL IS " + s.getEmail());
+        User user = new User();
         user.setEmail(s.getEmail());
         user.setPassword(s.getPassword());
-        TMRole role=TMRole.STUDENT;
+        TMRole role = TMRole.STUDENT;
         user.setRole(role.getTmRole());
         user.setStatus(0);
         user.setIsDeleted(Boolean.FALSE);
@@ -71,30 +76,65 @@ public class StudentDetails implements Serializable{
         user.setStudent(s);
         userFacadeLocal.create(user);
     }
-    public String addTeacher() {
+
+    public String addStudent() {
         student.setIsDeleted(false);
+        System.out.println("Student email is " + student.getEmail());
+        System.out.println("Student last is " + student.getLastName());
+        System.out.println("Student first is " + student.getFirstName());
+
         studentFacadeLocal.create(student);
-        
-        addUser(student);        
+
+        addUser(student);
+        try {
+            students = studentFacadeLocal.findAll();
+            System.out.println("Size is "+students.size());
+        } catch (NullPointerException e) {
+        }
         clearStudentValue();
-//        try {
-//            teachers = teacherFacadeLocal.findAll();
-//        } catch (NullPointerException e) {
-//        }
-        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Successfully create teacher having email "+student.getEmail()));
-        return "createTeacher?faces-redirect=true";
+        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Successfully create teacher having email " + student.getEmail()));
+        return "createStudent?faces-redirect=true";
     }
-     public void clearStudentValue() {
+
+    public void clearStudentValue() {
         student.setFirstName("");
         student.setMiddleName("");
         student.setLastName("");
         student.setEmail("");
     }
-     public String showStudentInfo() {
-        System.out.println("Inside method");
+
+    public String showStudentInfo() {
         //teachers = teacherFacadeLocal.findAll();
-       //return "createTeacher";       
-       return "createStudent?faces-redirect=true";
+        return "createStudent";       
+        //return "createStudent?faces-redirect=true";
+    }
+    public void onStudentRowEdit(RowEditEvent event) {
+        try {
+            Student stud = (Student) event.getObject();
+            if (stud != null) {
+                studentFacadeLocal.edit(student);
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Updated Student"));
+            } else {
+                FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_ERROR, ResourceBundle.getBundle("bundle").getString("msg.error.save"), "");
+                FacesContext.getCurrentInstance().addMessage(null, msg);
+            }
+        } catch (Exception ex) {
+            FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_ERROR, ResourceBundle.getBundle("bundle").getString("msg.error.save"), "");
+            FacesContext.getCurrentInstance().addMessage(null, msg);
+        }
+    }
+    public void onStudentRowCancel(RowEditEvent event) {
+        try {
+            Student stud = (Student) event.getObject();
+            if (stud != null) {
+            } else {
+                FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_ERROR, ResourceBundle.getBundle("bundle").getString("msg.error.save"), "");
+                FacesContext.getCurrentInstance().addMessage(null, msg);
+            }
+        } catch (Exception ex) {
+            FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_ERROR, ResourceBundle.getBundle("bundle").getString("msg.error.save"), "");
+            FacesContext.getCurrentInstance().addMessage(null, msg);
+        }
     }
 
     public List<Teamchecking> getTeamcheckings() {
@@ -112,8 +152,14 @@ public class StudentDetails implements Serializable{
     public void setStudent(Student student) {
         this.student = student;
     }
+
+    public List<Student> getStudents() {
+        return students;
+    }
+
+    public void setStudents(List<Student> students) {
+        this.students = students;
+    }
     
-    
-    
-    
+
 }
