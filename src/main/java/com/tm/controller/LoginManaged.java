@@ -29,23 +29,35 @@ public class LoginManaged {
     private String errorMessage;
     @EJB
     private UserFacadeLocal facadeLocal;
+    private boolean showAddTeacher;
+    private boolean showAddStudent;
+    private boolean showAddSetting;
+    private boolean showCreateAppointment;
+    private boolean showStudentAppointmentDate;
+    private boolean showStudentTMCheckingStatus;
 
     public String checkLogin() {
         User user = facadeLocal.checkUserName(username);
-        System.out.println("USER NAME IS "+user.getEmail()+" Password "+user.getPassword());
+        System.out.println("USER NAME IS " + user.getEmail() + " Password " + user.getPassword());
+        showAddTeacher = false;
+        showAddStudent = false;
+        showAddSetting = false;
+        showCreateAppointment = false;
+        showStudentAppointmentDate = false;
+        showStudentTMCheckingStatus = false;
         if (user != null) {
             if (user.getPassword().equals(password)) {
                 int loggedInID = 0;
-                if(TMRole.valueOf("IT").getTmRole()==user.getRole()){
-                    loggedInID=0;
-                }else if(TMRole.valueOf("TEACHER").getTmRole()==user.getRole()){
-                     loggedInID = user.getTeacher().getId();
-                }else if(TMRole.valueOf("STUDENT").getTmRole()==user.getRole()){
+                if (TMRole.valueOf("IT").getTmRole() == user.getRole()) {
+                    loggedInID = 0;
+                } else if (TMRole.valueOf("TEACHER").getTmRole() == user.getRole()) {
+                    loggedInID = user.getTeacher().getId();
+                } else if (TMRole.valueOf("STUDENT").getTmRole() == user.getRole()) {
                     loggedInID = user.getStudent().getId();
-                }else{
+                } else {
                     System.out.println("Problem with role of user");
                 }
-                loggedInID = checkValidateMember(user);
+                System.out.println("LOGGED IN ID " + loggedInID);
                 if (loggedInID != 0) {
                     HttpSession session = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(true);
                     session.setAttribute("userId", loggedInID);
@@ -61,29 +73,6 @@ public class LoginManaged {
             System.out.println("Invalid login");
         }
         return "login";
-    }
-
-    public int checkValidateMember(User u) {
-        int loggedInID = 0;
-        try {
-            if (u.getTeacher().getId() != null) {
-                loggedInID = u.getTeacher().getId();
-            } else {
-                System.out.println("Problem with loggedIn ID in teacher");
-            }
-        } catch (NullPointerException e) {
-            System.out.println("EXCEPTION IN TEACHER ID");
-        }
-        try {
-            if (u.getStudent().getId() != null) {
-                loggedInID = u.getStudent().getId();
-            } else {
-                System.out.println("Problem with loggedIn ID in student");
-            }
-        } catch (NullPointerException e) {
-            System.out.println("EXCEPTION IN STUDENT ID");
-        }
-        return loggedInID;
     }
 
     public void logout() throws IOException {
@@ -115,6 +104,54 @@ public class LoginManaged {
 
     public void setErrorMessage(String errorMessage) {
         this.errorMessage = errorMessage;
+    }
+
+    public boolean isShowAddTeacher() {
+        return showAddTeacher;
+    }
+
+    public void setShowAddTeacher(boolean showAddTeacher) {
+        this.showAddTeacher = showAddTeacher;
+    }
+
+    public boolean isShowAddStudent() {
+        return showAddStudent;
+    }
+
+    public void setShowAddStudent(boolean showAddStudent) {
+        this.showAddStudent = showAddStudent;
+    }
+
+    public boolean isShowAddSetting() {
+        return showAddSetting;
+    }
+
+    public void setShowAddSetting(boolean showAddSetting) {
+        this.showAddSetting = showAddSetting;
+    }
+
+    public boolean isShowCreateAppointment() {
+        return showCreateAppointment;
+    }
+
+    public void setShowCreateAppointment(boolean showCreateAppointment) {
+        this.showCreateAppointment = showCreateAppointment;
+    }
+
+    public boolean isShowStudentAppointmentDate() {
+        return showStudentAppointmentDate;
+    }
+
+    public void setShowStudentAppointmentDate(boolean showStudentAppointmentDate) {
+        this.showStudentAppointmentDate = showStudentAppointmentDate;
+    }
+
+    public boolean isShowStudentTMCheckingStatus() {
+        return showStudentTMCheckingStatus;
+    }
+
+    public void setShowStudentTMCheckingStatus(boolean showStudentTMCheckingStatus) {
+        this.showStudentTMCheckingStatus = showStudentTMCheckingStatus;
     }
 
 }
