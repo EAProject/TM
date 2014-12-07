@@ -7,6 +7,7 @@ package com.tm.controller;
 
 import com.tm.ejb.UserFacadeLocal;
 import com.tm.entities.User;
+import com.tm.utils.TMRole;
 import java.io.IOException;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
@@ -35,6 +36,15 @@ public class LoginManaged {
         if (user != null) {
             if (user.getPassword().equals(password)) {
                 int loggedInID = 0;
+                if(TMRole.valueOf("IT").getTmRole()==user.getRole()){
+                    loggedInID=0;
+                }else if(TMRole.valueOf("TEACHER").getTmRole()==user.getRole()){
+                     loggedInID = user.getTeacher().getId();
+                }else if(TMRole.valueOf("STUDENT").getTmRole()==user.getRole()){
+                    loggedInID = user.getStudent().getId();
+                }else{
+                    System.out.println("Problem with role of user");
+                }
                 loggedInID = checkValidateMember(user);
                 if (loggedInID != 0) {
                     HttpSession session = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(true);
