@@ -13,34 +13,34 @@
                 <table id="homeIcons">
                     <tr>
                         <td class="paddingtable">
-                            <h:commandLink class="btnTeacher" action="#{teacherBean.showTeacherInfo()}" >
+                            <h:commandLink rendered="#{loginManaged.showAddTeacher}" class="btnTeacher" action="#{teacherBean.showTeacherInfo()}" >
                                 <span>Teacher</span>
                             </h:commandLink>
                         </td>
                         <td class="paddingtable">
-                            <h:commandLink class="btnStudent" action="#{studentDetails.showStudentInfo()}">
+                            <h:commandLink class="btnStudent" rendered="#{loginManaged.showAddStudent}" action="#{studentDetails.showStudentInfo()}">
                                 <span>Student</span>
                             </h:commandLink>
                         </td>
                          <td class="paddingtable">
-                            <h:commandLink class="btnSetting" action="setting">
+                             <h:commandLink class="btnSetting" rendered="#{loginManaged.showAddSetting}" action="setting">
                                 <span>Setting</span>
                             </h:commandLink>
                         </td>                       
                     </tr>
                     <tr> 
                         <td class="paddingtable">
-                            <h:commandLink class="createAppointment" action="createAppointment">
+                            <h:commandLink class="createAppointment" rendered="#{loginManaged.showCreateAppointment}" action="createAppointment">
                                 <span>Create Appointment</span>
                             </h:commandLink>
                         </td>
                           <td class="paddingtable">
-                            <h:commandLink class="studentAppointmentDate" action="studentTMDate">
+                              <h:commandLink class="studentAppointmentDate" rendered="#{loginManaged.showStudentAppointmentDate}" action="studentTMDate">
                                 <span>Student Appointment Date</span>
                             </h:commandLink>
                         </td>
                          <td class="paddingtable">
-                            <h:commandLink class="totalTMChecking" action="#{studentDetails.studentTMCheckingDetails()}">
+                             <h:commandLink class="totalTMChecking" rendered="#{loginManaged.showStudentTMCheckingStatus}" action="#{studentDetails.studentTMCheckingDetails()}">
                                 <span>Student TM Checking</span>
                             </h:commandLink>
                         </td>

@@ -38,7 +38,6 @@ public class LoginManaged {
 
     public String checkLogin() {
         User user = facadeLocal.checkUserName(username);
-        System.out.println("USER NAME IS " + user.getEmail() + " Password " + user.getPassword());
         showAddTeacher = false;
         showAddStudent = false;
         showAddSetting = false;
@@ -50,15 +49,32 @@ public class LoginManaged {
                 int loggedInID = 0;
                 if (TMRole.valueOf("IT").getTmRole() == user.getRole()) {
                     loggedInID = 0;
+                    showAddTeacher = true;
+                    showAddStudent = true;
+                    showAddSetting = true;
+                    showCreateAppointment = true;
+                    showStudentAppointmentDate = true;
+                    showStudentTMCheckingStatus = true;
                 } else if (TMRole.valueOf("TEACHER").getTmRole() == user.getRole()) {
                     loggedInID = user.getTeacher().getId();
+                    showAddTeacher = false;
+                    showAddStudent = true;
+                    showAddSetting = false;
+                    showCreateAppointment = true;
+                    showStudentAppointmentDate = false;
+                    showStudentTMCheckingStatus = true;
                 } else if (TMRole.valueOf("STUDENT").getTmRole() == user.getRole()) {
                     loggedInID = user.getStudent().getId();
+                    showAddTeacher = false;
+                    showAddStudent = false;
+                    showAddSetting = false;
+                    showCreateAppointment = false;
+                    showStudentAppointmentDate = true;
+                    showStudentTMCheckingStatus = true;
                 } else {
                     System.out.println("Problem with role of user");
                 }
-                System.out.println("LOGGED IN ID " + loggedInID);
-                if (loggedInID != 0) {
+                if (loggedInID >=0) {
                     HttpSession session = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(true);
                     session.setAttribute("userId", loggedInID);
                     return "home";
