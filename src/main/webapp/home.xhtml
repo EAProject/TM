@@ -7,13 +7,9 @@
       xmlns:p="http://primefaces.org/ui">
 
     <ui:composition template="/main_template.xhtml">
-        <ui:define name="body">
-            TEACHER HOME
+        <ui:define name="body">           
             <h:form>
-
                 <div style="clear: both;"></div>
-
-
                 <table id="homeIcons">
                     <tr>
                         <td class="paddingtable">
@@ -27,34 +23,32 @@
                             </h:commandLink>
                         </td>
                          <td class="paddingtable">
-                            <h:commandLink class="btnSetting" action="#{studentDetails.studentTMCheckingDetails()}">
+                            <h:commandLink class="btnSetting" action="setting">
                                 <span>Setting</span>
                             </h:commandLink>
-                        </td>
-                       
+                        </td>                       
                     </tr>
-                    <tr>
-                        
-                        
+                    <tr> 
                         <td class="paddingtable">
-                            <h:commandLink class="btnSetting" action="createAppointment">
+                            <h:commandLink class="createAppointment" action="createAppointment">
                                 <span>Create Appointment</span>
                             </h:commandLink>
                         </td>
                           <td class="paddingtable">
-                            <h:commandLink class="btnSetting" action="studentTMDate">
-                                <span>Student TM Date</span>
+                            <h:commandLink class="studentAppointmentDate" action="studentTMDate">
+                                <span>Student Appointment Date</span>
+                            </h:commandLink>
+                        </td>
+                         <td class="paddingtable">
+                            <h:commandLink class="totalTMChecking" action="#{studentDetails.studentTMCheckingDetails()}">
+                                <span>Student TM Checking</span>
                             </h:commandLink>
                         </td>
                     </tr>
                 </table>
-
-
                 <div style="clear: both;"></div>
-
             </h:form>
         </ui:define>
     </ui:composition>
-
 </html>
 
