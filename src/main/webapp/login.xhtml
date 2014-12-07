@@ -5,34 +5,43 @@
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:f="http://xmlns.jcp.org/jsf/core"
       xmlns:p="http://primefaces.org/ui">
+    <h:head>
+        <h:outputStylesheet library="css" name="animate.css"/>
+        <h:outputStylesheet library="css" name="loginstyles.css"/>
+        <h:outputStylesheet library="css" name="reset.css"/>
+    </h:head>   
+    <h:body>
+        <div id="container">
 
-    <ui:composition template="/main_template.xhtml">
-        <ui:define name="body">
-            <div class="col-lg-12 center" style="text-align: center;">
-            <div class="col-lg-6">
-        TM CHECKING
-       
-        <h:form >
-            <p:panel header="Login Panel" styleClass="success">
-                 <h:outputText value="#{loginManaged.errorMessage}"/>
-                <h:panelGrid columns="2">
-                   
-                    <h:outputText value="Username" />
-                    <h:inputText value="#{loginManaged.username}" />  
-                    <h:outputText value="Password" />
-                    <h:inputSecret value="#{loginManaged.password}" />                 
-                </h:panelGrid>    
-                <br/>
-                <h:commandButton value="Login" action="#{loginManaged.checkLogin()}"/>
-            </p:panel>
-           
-        </h:form>
+            <h:form>
+                <div style="padding:10px;">
+                    
+                    <p style="padding-left:20px; color: red; text-align: center;">
+                    <h:outputText value="Error Message" />
+                    </p>
+                    
+                     <div style="clear: both"></div>
+                    <label for="name"  style="padding-left:20px;">Username:</label>
+                    <h:inputText value="#{loginManaged.username}" /> 
+                    <div style="clear: both"></div>
+
+                    <label for="username"  style="padding-left:20px;">Password:</label>
+
+
+
+                    <h:inputSecret value="#{loginManaged.password}" />
+
+                    <div id="lower">
+
+
+
+                        <h:commandButton value="Login" action="#{loginManaged.checkLogin()}"/>
+
+                    </div>
+                </div>
+            </h:form>
+
         </div>
-        </div>
-        
-        
-        </ui:define>
-        
-    </ui:composition>
+    </h:body>
 </html>
 

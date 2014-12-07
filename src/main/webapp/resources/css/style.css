@@ -172,6 +172,7 @@ nav.desktop {
 	border-bottom: 5px solid #59ae35;
 	color: #fff;
 	overflow: visible;
+        height:100px;
 }
 
 .gray {
@@ -659,7 +660,7 @@ header {
 }
 
 header .container { 
-	padding-top: 22px;
+	padding-top: 0px;
 	padding-bottom: 70px;
 }
 
