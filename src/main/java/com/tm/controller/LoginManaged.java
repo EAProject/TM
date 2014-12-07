@@ -9,6 +9,7 @@ import com.tm.ejb.UserFacadeLocal;
 import com.tm.entities.User;
 import com.tm.utils.TMRole;
 import java.io.IOException;
+import java.io.Serializable;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
@@ -22,7 +23,7 @@ import javax.servlet.http.HttpSession;
  */
 @ManagedBean
 @SessionScoped
-public class LoginManaged {
+public class LoginManaged implements Serializable{
 
     private String username;
     private String password;
@@ -75,6 +76,7 @@ public class LoginManaged {
                     System.out.println("Problem with role of user");
                 }
                 if (loggedInID >=0) {
+                    System.out.println("LOGGGED ID "+loggedInID);
                     HttpSession session = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(true);
                     session.setAttribute("userId", loggedInID);
                     return "home";

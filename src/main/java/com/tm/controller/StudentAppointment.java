@@ -101,9 +101,8 @@ public class StudentAppointment implements Serializable{
 
 
     public void addEvent(ActionEvent actionEvent) {
-        //HttpSession session = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(true);
-        //int teacherId = (int) session.getAttribute("userId");
-        int studentId=1;
+        HttpSession session = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(true);
+        int studentId = (int) session.getAttribute("userId");       
         Student student = studentFacadeLocal.find(studentId);
         Teamchecking teamchecking = new Teamchecking();
         teamchecking.setStudentId(student);        

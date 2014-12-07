@@ -137,10 +137,7 @@ public class ScheduleView implements Serializable {
         return "";
     }
 
-    public void addEvent(ActionEvent actionEvent) {
-         System.out.println("Title min >>>>>>>>>>>>>>>"+event.getTitle());
-        System.out.println("EVENT ID min >>>>>>>>>>>>>>>"+event.getData());
-        
+    public void addEvent(ActionEvent actionEvent) {         
         Date date1 = event.getStartDate();
         DateFormat df = new SimpleDateFormat("MMMM d, yyyy");
         String startDate = df.format(date1);
@@ -163,7 +160,6 @@ public class ScheduleView implements Serializable {
         teamchecking.setFromHours((Date) event.getData());
         teamchecking.setNote(event.getTitle());
         teamchecking.setPending(Boolean.TRUE);
-        System.out.println("IN CREATE SCHEDULE");
         teamchecking.setCalendarId(event.getId());
         teamcheckingFacadeLocal.create(teamchecking);
         if (event.getId() == null) {
@@ -175,18 +171,14 @@ public class ScheduleView implements Serializable {
     }
 
     public void onEventSelect(SelectEvent selectEvent) {
-        System.out.println("EVENT SELECT");
-         System.out.println("ID IS "+event.getData());
         event = (ScheduleEvent) selectEvent.getObject();
     }
 
     public void onDateSelect(SelectEvent selectEvent) {
-        System.out.println(">>>>>>>>>>>>> " + event.getData());
         event = new DefaultScheduleEvent("", (Date) selectEvent.getObject(), (Date) selectEvent.getObject());
     }
 
     public void onEventMove(ScheduleEntryMoveEvent event) {
-         System.out.println("ONEVENT MODE>>>>>> "+event);
         FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Event moved", "Day delta:" + event.getDayDelta() + ", Minute delta:" + event.getMinuteDelta());
         addMessage(message);
     }
