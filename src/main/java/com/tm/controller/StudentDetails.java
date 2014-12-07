@@ -13,6 +13,7 @@ import com.tm.entities.Teamchecking;
 import com.tm.entities.User;
 import com.tm.utils.TMRole;
 import java.io.Serializable;
+import java.util.AbstractList;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -41,19 +42,19 @@ public class StudentDetails implements Serializable {
     @EJB
     private UserFacadeLocal userFacadeLocal;
     List<Student> students = new ArrayList<Student>();
+    List<TotalTMChecking> totalTMCheckings;
 
     public String studentTMCheckingDetails() {
-        teamcheckings = teamcheckingFacadeLocal.findByStudentChecking();
-        for (int i = 0; i < teamcheckings.size(); i++) {
-            Teamchecking teamchecking = teamcheckings.get(i);
-            System.out.println("ID IS " + teamchecking.getId());
-
+        List<Object[]> results = new ArrayList<>();
+        results = teamcheckingFacadeLocal.findByStudentChecking();
+        totalTMCheckings = new ArrayList<>();
+        for (Object[] result : results) {
+            totalTMCheckings.add(new TotalTMChecking((Long) result[1], (Student) result[0]));
         }
         return "studentTmCheckingDetails";
     }
 
     public void addUser(Student s) {
-        System.out.println("EMAIL IS " + s.getEmail());
         User user = new User();
         user.setEmail(s.getEmail());
         user.setPassword(s.getPassword());
@@ -148,6 +149,14 @@ public class StudentDetails implements Serializable {
 
     public void setStudents(List<Student> students) {
         this.students = students;
+    }
+
+    public List<TotalTMChecking> getTotalTMCheckings() {
+        return totalTMCheckings;
+    }
+
+    public void setTotalTMCheckings(List<TotalTMChecking> totalTMCheckings) {
+        this.totalTMCheckings = totalTMCheckings;
     }
 
 }

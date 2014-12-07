@@ -5,9 +5,12 @@
  */
 package com.tm.ejb;
 
+import com.tm.entities.Student;
 import com.tm.entities.Teamchecking;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -19,6 +22,7 @@ import javax.persistence.Query;
  */
 @Stateless
 public class TeamcheckingFacade extends AbstractFacade<Teamchecking> implements TeamcheckingFacadeLocal {
+
     @PersistenceContext(unitName = "tm-PU")
     private EntityManager em;
 
@@ -34,11 +38,11 @@ public class TeamcheckingFacade extends AbstractFacade<Teamchecking> implements 
     @Override
     public boolean Update(Teamchecking teamchecking, Object data) {
         try {
-            System.out.println("FIND IN FACADE "+data);
-            Teamchecking tmChecking=em.find(Teamchecking.class,Integer.parseInt((String)data));
+            System.out.println("FIND IN FACADE " + data);
+            Teamchecking tmChecking = em.find(Teamchecking.class, Integer.parseInt((String) data));
             System.out.println(">>>>>>>>>>>");
-            System.out.println("FIND TM CHECKING "+tmChecking.getId());
-            System.out.println("STUDENT NAME IS:: "+teamchecking.getStudentId()+" ::::: "+teamchecking.getPending());
+            System.out.println("FIND TM CHECKING " + tmChecking.getId());
+            System.out.println("STUDENT NAME IS:: " + teamchecking.getStudentId() + " ::::: " + teamchecking.getPending());
             tmChecking.setStudentId(teamchecking.getStudentId());
             tmChecking.setPending(Boolean.FALSE);
             em.merge(tmChecking);
@@ -51,25 +55,18 @@ public class TeamcheckingFacade extends AbstractFacade<Teamchecking> implements 
     }
 
     @Override
-    public List<Teamchecking> findByStudentChecking() {
+    public List<Object[]> findByStudentChecking() {
         try {
-            List<Teamchecking> teamcheckings=new ArrayList<>();
-            //Query query=em.createNativeQuery("SELECT student_id, COUNT(*) FROM teamchecking WHERE pending=0 GROUP BY student_id",Teamchecking.class);
-             Query query=em.createQuery("SELECT t FROM Teamchecking t");
-           
-            //Query query=em.createQuery("SELECT t.student_id, COUNT(*) FROM teamchecking t WHERE t.pending=0 GROUP BY t.student_id");
-            teamcheckings=(List<Teamchecking>)query.getResultList();
-            System.out.println("Size in facade is "+teamcheckings.size());
-            for(Teamchecking t:teamcheckings){
-                System.out.println("::::::::::::::>> "+t);
-                System.out.println(":::::::::::::: "+t.getStudentId());
-            }
-            return teamcheckings;
+            List<Object[]> results = new ArrayList<>();
+            Query query = em.createQuery("SELECT t.studentId,COUNT(t) FROM Teamchecking t WHERE t.pending= :pending GROUP BY t.studentId");
+            query.setParameter("pending", false);
+            results = query.getResultList();
+            return results;
         } catch (Exception e) {
             System.out.println("Exception here");
             e.printStackTrace();
         }
         return null;
     }
-    
+
 }

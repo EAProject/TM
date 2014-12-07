@@ -31,6 +31,7 @@ public class LoginManaged {
 
     public String checkLogin() {
         User user = facadeLocal.checkUserName(username);
+        System.out.println("USER NAME IS "+user.getEmail()+" Password "+user.getPassword());
         if (user != null) {
             if (user.getPassword().equals(password)) {
                 int loggedInID = 0;
