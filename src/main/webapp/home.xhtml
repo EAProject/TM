@@ -8,16 +8,53 @@
 
     <ui:composition template="/main_template.xhtml">
         <ui:define name="body">
-        TEACHER HOME
-        <h:form>
-            <h:commandButton value="Add Teacher" action="#{teacherBean.showTeacherInfo()}"/>
-            <h:commandButton value="Add Student" action="#{studentDetails.showStudentInfo()}"/>
-            <h:commandButton value="Add Schedule" action="createAppointment"/>    
-            <h:commandButton value="Show Student Calendar" action="studentTMDate"/>    
-            <h:commandButton value="Total Student" action="#{studentDetails.studentTMCheckingDetails()}"/>    
-        </h:form>
+            TEACHER HOME
+            <h:form>
+
+                <div style="clear: both;"></div>
+
+
+                <table id="homeIcons">
+                    <tr>
+                        <td class="paddingtable">
+                            <h:commandLink class="btnTeacher" action="#{teacherBean.showTeacherInfo()}" >
+                                <span>Teacher</span>
+                            </h:commandLink>
+                        </td>
+                        <td class="paddingtable">
+                            <h:commandLink class="btnStudent" action="#{studentDetails.showStudentInfo()}">
+                                <span>Student</span>
+                            </h:commandLink>
+                        </td>
+                         <td class="paddingtable">
+                            <h:commandLink class="btnSetting" action="#{studentDetails.studentTMCheckingDetails()}">
+                                <span>Setting</span>
+                            </h:commandLink>
+                        </td>
+                       
+                    </tr>
+                    <tr>
+                        
+                        
+                        <td class="paddingtable">
+                            <h:commandLink class="btnSetting" action="createAppointment">
+                                <span>Create Appointment</span>
+                            </h:commandLink>
+                        </td>
+                          <td class="paddingtable">
+                            <h:commandLink class="btnSetting" action="studentTMDate">
+                                <span>Student TM Date</span>
+                            </h:commandLink>
+                        </td>
+                    </tr>
+                </table>
+
+
+                <div style="clear: both;"></div>
+
+            </h:form>
         </ui:define>
     </ui:composition>
-    
+
 </html>
 

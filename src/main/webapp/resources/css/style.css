@@ -5558,3 +5558,50 @@ td, .tablepress tbody td{
     border-collapse: separate;
 }
 
+#homeIcons a {
+display: block;
+width: 200px;
+height: 200px;
+text-align: center;
+border-radius: 100px;
+box-shadow: 0 0 10px #ccc;
+margin: auto;
+display: block;
+position: relative;
+}
+#homeIcons a span {
+position:absolute;
+bottom: 0;
+left: 0;
+display: block;
+text-align: center;
+padding: 5px 0;
+width: 100%;
+background: #0099ff;
+font-size: 16px;
+color: #fff;
+border-radius: 5px;
+}
+#homeIcons a.btnTeacher {
+background-image: url(../resources/images/teacher.png);
+background-repeat: no-repeat;
+background-position: center center;
+}
+#homeIcons a.btnStudent {
+background-image: url(../resources/images/student.png);
+background-repeat: no-repeat;
+background-position: center center;
+}
+#homeIcons a.btnSetting {
+background-image: url(../resources/images/setting.png);
+background-repeat: no-repeat;
+background-position: center center;
+}
+#homeIcons a img {
+height: auto;
+width: 60%;
+}
+.paddingtable{
+    padding: 30px;    
+}
+
