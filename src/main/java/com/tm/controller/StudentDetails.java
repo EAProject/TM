@@ -49,7 +49,14 @@ public class StudentDetails implements Serializable {
         results = teamcheckingFacadeLocal.findByStudentChecking();
         totalTMCheckings = new ArrayList<>();
         for (Object[] result : results) {
-            totalTMCheckings.add(new TotalTMChecking((Long) result[1], (Student) result[0]));
+            boolean tmStatus=false;
+            
+            if((Long) result[1]>4){
+                tmStatus=true;
+            }else{
+                tmStatus=false;
+            }
+            totalTMCheckings.add(new TotalTMChecking((Long) result[1], (Student) result[0],tmStatus));
         }
         return "studentTmCheckingDetails";
     }

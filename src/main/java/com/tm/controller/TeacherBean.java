@@ -76,6 +76,8 @@ public class TeacherBean implements Serializable {
     }
 
     public String showTeacherInfo() {
+        teacher.setEmail("");
+        teacher.setPassword("");
         System.out.println("Inside method");
         teachers = teacherFacadeLocal.findAll();
         return "createTeacher?faces-redirect=true";

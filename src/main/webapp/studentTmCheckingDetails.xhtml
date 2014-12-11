@@ -13,17 +13,26 @@
                 <p:dataTable var="tm" value="#{studentDetails.totalTMCheckings}" paginator="true" rows="10"
                              paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {NextPageLink} {LastPageLink}"
                              rowsPerPageTemplate="5,10,15" >
+                    
                     <p:column headerText="FirstName" >                        
-                        <h:outputText value="#{tm.student.firstName}" />
+                        <h:outputText rendered="#{tm.tmStatus==true}" value="#{tm.student.firstName}"  />
+                        <h:outputText rendered="#{tm.tmStatus==false}" value="#{tm.student.firstName}" style="color: red;" />                                
                     </p:column>
                       <p:column headerText="LastName" >                        
-                          <h:outputText value="#{tm.student.lastName}" />
+                        <h:outputText rendered="#{tm.tmStatus==true}" value="#{tm.student.lastName}"  />
+                        <h:outputText rendered="#{tm.tmStatus==false}" value="#{tm.student.lastName}" style="color: red;" />                  
                     </p:column>
                     <p:column headerText="Email" >                        
-                        <h:outputText value="#{tm.student.email}" />
+                        <h:outputText rendered="#{tm.tmStatus==true}" value="#{tm.student.email}"  />
+                        <h:outputText rendered="#{tm.tmStatus==false}" value="#{tm.student.email}" style="color: red;" />                  
                     </p:column>
                     <p:column headerText="Total TMChecking" >                        
-                        <h:outputText value="#{tm.tmCount}" />
+                        <h:outputText rendered="#{tm.tmStatus==true}" value="#{tm.tmCount}"  />
+                        <h:outputText rendered="#{tm.tmStatus==false}" value="#{tm.tmCount}" style="color: red;" /> 
+                    </p:column>
+                     <p:column headerText="Status" >   
+                         <h:outputText rendered="#{tm.tmStatus==true}" value="DONE"  />
+                         <h:outputText rendered="#{tm.tmStatus==false}" value="IN-PROGRESS" style="color: red;" /> 
                     </p:column>
                 </p:dataTable>
             </h:form>

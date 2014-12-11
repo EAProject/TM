@@ -14,10 +14,12 @@ import com.tm.entities.Student;
 public class TotalTMChecking {
     private Student student;
     private Long tmCount;
+    private boolean tmStatus;
     
-    public TotalTMChecking(Long tmCount,Student student){
+    public TotalTMChecking(Long tmCount,Student student,boolean tmStatus){
         this.tmCount=tmCount;
         this.student=student;
+        this.tmStatus=tmStatus;
     }
 
     public Long getTmCount() {
@@ -34,6 +36,14 @@ public class TotalTMChecking {
 
     public void setStudent(Student student) {
         this.student = student;
+    }
+
+    public boolean isTmStatus() {
+        return tmStatus;
+    }
+
+    public void setTmStatus(boolean tmStatus) {
+        this.tmStatus = tmStatus;
     }
     
     
