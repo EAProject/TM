@@ -76,19 +76,18 @@ public class LoginManaged implements Serializable{
                     System.out.println("Problem with role of user");
                 }
                 if (loggedInID >=0) {
-                    System.out.println("LOGGGED ID "+loggedInID);
                     HttpSession session = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(true);
                     session.setAttribute("userId", loggedInID);
                     return "home";
                 } else {
-                    System.out.println("Problem while loggedIn");
+                    errorMessage="Invalid Username/Password";
                 }
 
             } else {
-                System.out.println("Invalid login..");
+                errorMessage="Invalid Username/Password";
             }
         } else {
-            System.out.println("Invalid login");
+            errorMessage="Invalid Username/Password";
         }
         return "login";
     }
