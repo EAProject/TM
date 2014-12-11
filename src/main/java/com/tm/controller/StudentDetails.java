@@ -23,6 +23,7 @@ import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
+import javax.servlet.http.HttpSession;
 import org.primefaces.event.RowEditEvent;
 
 /**
@@ -43,19 +44,21 @@ public class StudentDetails implements Serializable {
     private UserFacadeLocal userFacadeLocal;
     List<Student> students = new ArrayList<Student>();
     List<TotalTMChecking> totalTMCheckings;
+    
+    
 
     public String studentTMCheckingDetails() {
         List<Object[]> results = new ArrayList<>();
         results = teamcheckingFacadeLocal.findByStudentChecking();
         totalTMCheckings = new ArrayList<>();
-        for (Object[] result : results) {
-            boolean tmStatus=false;
-            
-            if((Long) result[1]>4){
+        boolean tmStatus=false;
+        for (Object[] result : results) {           
+             if((Long) result[1]>4){
                 tmStatus=true;
             }else{
                 tmStatus=false;
             }
+            
             totalTMCheckings.add(new TotalTMChecking((Long) result[1], (Student) result[0],tmStatus));
         }
         return "studentTmCheckingDetails";

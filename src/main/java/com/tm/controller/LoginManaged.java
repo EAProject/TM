@@ -48,6 +48,9 @@ public class LoginManaged implements Serializable{
         if (user != null) {
             if (user.getPassword().equals(password)) {
                 int loggedInID = 0;
+                HttpSession sess = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(true);
+                sess.setAttribute("userRole", user.getRole());
+               
                 if (TMRole.valueOf("IT").getTmRole() == user.getRole()) {
                     loggedInID = 0;
                     showAddTeacher = true;

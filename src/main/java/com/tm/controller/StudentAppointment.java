@@ -26,6 +26,7 @@ import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
+import javax.faces.bean.SessionScoped;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
@@ -43,7 +44,8 @@ import org.primefaces.model.ScheduleModel;
  * @author SuJoshi
  */
 @ManagedBean(name = "studentAppointment")
-@ViewScoped
+//@ViewScoped
+@SessionScoped
 public class StudentAppointment implements Serializable{
     
     public String redirectToStudentSchedule(){        
@@ -121,6 +123,7 @@ public class StudentAppointment implements Serializable{
     }
 
     public void onEventSelect(SelectEvent selectEvent) {
+        System.out.println("SSSSSSSSSSSSSSSSs ");
         event = (ScheduleEvent) selectEvent.getObject();
     }
 
