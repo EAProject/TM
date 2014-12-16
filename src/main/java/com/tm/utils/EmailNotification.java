@@ -18,7 +18,7 @@ import javax.mail.internet.MimeMessage;
  *
  * @author sunil
  */
-public class Email {
+public class EmailNotification {
 
     private String toemail;
     private String subject;

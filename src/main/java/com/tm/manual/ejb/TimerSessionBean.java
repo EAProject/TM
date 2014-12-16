@@ -8,7 +8,7 @@ package com.tm.manual.ejb;
 import com.tm.ejb.EmailFacadeLocal;
 import com.tm.ejb.TeamcheckingFacadeLocal;
 import com.tm.entities.Teamchecking;
-import com.tm.utils.Email;
+import com.tm.utils.EmailNotification;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -119,7 +119,7 @@ public class TimerSessionBean {
             System.out.println("Student id is " + teamchecking.getStudentId().getEmail());
             boolean updateCheckedStatus = teamcheckingFacadeLocal.UpdateChecked(teamchecking);
             if (updateCheckedStatus == true) {
-                Email email = new Email();
+                EmailNotification email = new EmailNotification();
                 email.setToemail(teamchecking.getStudentId().getEmail());
                 email.setSubject(emailBean.getSubject());
                 email.setMessagetext(emailBean.getMessage(), "testHASH");
