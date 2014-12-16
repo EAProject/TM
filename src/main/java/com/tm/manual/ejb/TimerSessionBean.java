@@ -5,6 +5,7 @@
  */
 package com.tm.manual.ejb;
 
+import com.tm.ejb.EmailFacadeLocal;
 import com.tm.ejb.TeamcheckingFacadeLocal;
 import com.tm.entities.Teamchecking;
 import com.tm.utils.Email;
@@ -38,9 +39,8 @@ public class TimerSessionBean {
 
     @EJB
     private TeamcheckingFacadeLocal teamcheckingFacadeLocal;
-    private String subject="subjectTest";
-    private String messageText="messageTest";
-            
+    @EJB
+    private EmailFacadeLocal emailFacadeLocal;
 
     private Logger logger = Logger.getLogger("com.sun.tutorial.javaee.ejb.timersession.TimerSessionBean");
 
@@ -55,12 +55,13 @@ public class TimerSessionBean {
         logger.info("Programmatic timeout occurred.");
     }
 
-    @Schedule(second = "*/5", minute = "*", hour = "*")
+    @Schedule(second = "*/10", minute = "*", hour = "*")
     public void automaticTimeout() {
         this.setLastAutomaticTimeout(new Date());
         logger.info("Automatic timeout occured");
         List<Teamchecking> teamcheckings = new ArrayList<>();
         teamcheckings = teamcheckingFacadeLocal.findByEmailChecked();
+        
         try {
             for (Teamchecking teamchecking : teamcheckings) {
                 try {
@@ -111,15 +112,17 @@ public class TimerSessionBean {
         this.lastAutomaticTimeout = lastAutomaticTimeout;
     }
 
-    public void sendEmail(Teamchecking teamchecking, int checkDays) {
+    public void sendEmail(Teamchecking teamchecking, int checkDays) {      
+        com.tm.entities.Email emailBean=emailFacadeLocal.findByEmailContent();
+        
         if (checkDays == 0) {
             System.out.println("Student id is " + teamchecking.getStudentId().getEmail());
             boolean updateCheckedStatus = teamcheckingFacadeLocal.UpdateChecked(teamchecking);
             if (updateCheckedStatus == true) {
                 Email email = new Email();
                 email.setToemail(teamchecking.getStudentId().getEmail());
-                email.setSubject(subject);
-                email.setMessagetext(messageText, "testHASH");
+                email.setSubject(emailBean.getSubject());
+                email.setMessagetext(emailBean.getMessage(), "testHASH");
                 email.sendEMail();
             }
 

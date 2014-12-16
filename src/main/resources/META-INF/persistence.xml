@@ -9,6 +9,7 @@
     <class>com.tm.entities.Teamchecking</class>
     <class>com.tm.entities.Test</class>
     <class>com.tm.entities.User</class>
+    <class>com.tm.entities.Email</class>
     <exclude-unlisted-classes>true</exclude-unlisted-classes>
     <properties>
     </properties>
