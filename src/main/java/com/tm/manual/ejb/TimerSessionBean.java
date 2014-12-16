@@ -116,7 +116,6 @@ public class TimerSessionBean {
         com.tm.entities.Email emailBean=emailFacadeLocal.findByEmailContent();
         
         if (checkDays == 0) {
-            System.out.println("Student id is " + teamchecking.getStudentId().getEmail());
             boolean updateCheckedStatus = teamcheckingFacadeLocal.UpdateChecked(teamchecking);
             if (updateCheckedStatus == true) {
                 EmailNotification email = new EmailNotification();

@@ -8,9 +8,12 @@ package com.tm.utils;
 import com.tm.ejb.EmailFacadeLocal;
 import com.tm.entities.Email;
 import java.io.Serializable;
+import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
+import javax.faces.context.FacesContext;
 
 /**
  *
@@ -24,18 +27,26 @@ public class TMSetting implements Serializable{
     @EJB
     private EmailFacadeLocal emailFacadeLocal;
     private Email email=new Email();
+    private String showMessage="";
     
+    @PostConstruct
+    public void clearValue(){
+        System.out.println("Clear value");
+        showMessage="";
+        //setShowMessage("");
+    }
+   
     public String settingValues(){
         System.out.println("TOTOAL TM "+totalTMChecking);
         System.out.println("======================");
-        emailFacadeLocal.create(email);
-        
         return "";
     }
 
      public String updateEmailInfo(){
         System.out.println("========Update email info===========");
         emailFacadeLocal.create(email);
+        showMessage="Update email information";
+        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Updated Email setting"));
         return "";
     }
      
@@ -53,6 +64,14 @@ public class TMSetting implements Serializable{
 
     public void setEmail(Email email) {
         this.email = email;
+    }
+
+    public String getShowMessage() {
+        return showMessage;
+    }
+
+    public void setShowMessage(String showMessage) {
+        this.showMessage = showMessage;
     }
 
     

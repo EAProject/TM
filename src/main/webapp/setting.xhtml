@@ -8,11 +8,17 @@
 
     <ui:composition template="/main_template.xhtml">
         <ui:define name="body">
+
             Comming Soon
-            <h:form>                
+
+
+            <h:form >         
                 <p:tabView>
                     <p:tab title="Email Setting">
+
                         <h:panelGrid columns="2" cellpadding="10">
+                            <h:outputText value=""/>
+                            <h:outputText style="color: #0099ff;" value="#{tMSetting.showMessage}"/>
                             <h:outputText value="Subject" />
                             <h:inputText value="#{tMSetting.email.subject}" />
                             <h:outputText value="Message" />
@@ -21,19 +27,17 @@
                         </h:panelGrid>
                     </p:tab>
                     <p:tab title="Total TM Checking">
-                            <h:panelGrid columns="2">
-                                <h:outputText value="Total TM Checking" />
-                                <h:inputText value="#{tMSetting.totalTMChecking}" />  
-                            </h:panelGrid>
-                            <h:commandButton value="Add" action="#{tMSetting.settingValues()}"/>
-                    </p:tab>
-                    <p:tab title="Godfather Part III">
-                        <h:panelGrid columns="2" cellpadding="10">
-                            <h:outputText value="After a break of more than 15 years..." />
+                        <h:panelGrid columns="2">
+                            <h:outputText value="Total TM Checking" />
+                            <h:inputText value="#{tMSetting.totalTMChecking}" />  
                         </h:panelGrid>
+
+                        <!--<h:commandButton value="Add" action="{tMSetting.settingValues()}"/>-->
                     </p:tab>
+                   
                 </p:tabView>
             </h:form>
+
         </ui:define>
     </ui:composition>
 
