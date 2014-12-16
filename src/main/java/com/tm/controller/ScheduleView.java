@@ -151,7 +151,6 @@ public class ScheduleView implements Serializable {
         int teacherId = (int) session.getAttribute("userId");
         System.out.println("Teacher iD is " + teacherId);
         Teacher teacher = teacherFacadeLocal.find(teacherId);
-        System.out.println("Teacher Name is " + teacher.getFirstName());
 
         Teamchecking teamchecking = new Teamchecking();
         teamchecking.setChecked(Boolean.FALSE);

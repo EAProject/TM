@@ -21,6 +21,7 @@ public class TMSetting implements Serializable{
     
     public String settingValues(){
         System.out.println("TOTOAL TM "+totalTMChecking);
+        System.out.println("======================");
         return "";
     }
 

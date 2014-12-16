@@ -25,6 +25,12 @@
                     <h:inputSecret value="#{teacherBean.teacher.password}" />
                     <h:outputText value="ContactNumber" />
                     <h:inputText value="#{teacherBean.teacher.contactNumber}" />
+                    
+                     <h:outputText value="Inline Feedback: " />
+                     <p:password id="inlineFeedback" value="#{teacherBean.teacher.password}" feedback="true" inline="true" />
+  
+                    
+                    
                     <f:facet name="footer">
                         <h:commandButton value="Add" action="#{teacherBean.addTeacher}"/>
                     </f:facet>
