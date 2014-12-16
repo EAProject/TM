@@ -78,6 +78,19 @@ public class TeamcheckingFacade extends AbstractFacade<Teamchecking> implements 
         }
         return null;
     }
+     @Override
+     public boolean UpdateChecked(Teamchecking teamchecking) {
+        try {           
+            Teamchecking tmChecking = em.find(Teamchecking.class, teamchecking.getId());           
+            tmChecking.setChecked(Boolean.TRUE);
+            em.merge(tmChecking);
+            return true;
+        } catch (Exception e) {
+            System.out.println("Some error while updating Teamchecking status checked");
+            e.printStackTrace();
+        }
+        return false;
+    }
    
 
 }

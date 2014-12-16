@@ -36,4 +36,5 @@ public interface TeamcheckingFacadeLocal {
      
      public List<Teamchecking> findByEmailChecked();
     
+    public boolean UpdateChecked(Teamchecking teamchecking); 
 }

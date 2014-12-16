@@ -7,6 +7,7 @@ package com.tm.manual.ejb;
 
 import com.tm.ejb.TeamcheckingFacadeLocal;
 import com.tm.entities.Teamchecking;
+import com.tm.utils.Email;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -37,6 +38,9 @@ public class TimerSessionBean {
 
     @EJB
     private TeamcheckingFacadeLocal teamcheckingFacadeLocal;
+    private String subject="subjectTest";
+    private String messageText="messageTest";
+            
 
     private Logger logger = Logger.getLogger("com.sun.tutorial.javaee.ejb.timersession.TimerSessionBean");
 
@@ -59,22 +63,18 @@ public class TimerSessionBean {
         teamcheckings = teamcheckingFacadeLocal.findByEmailChecked();
         try {
             for (Teamchecking teamchecking : teamcheckings) {
-                System.out.println(">>LOOP>>>>");
                 try {
                     String dateInString = teamchecking.getCheckingStartTime();
-
                     Date dateNow = new Date();
                     SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
                     String currentDate = sdf.format(dateNow);
 
                     SimpleDateFormat formatter = new SimpleDateFormat("MMMM d, yyyy");
                     java.util.Date utilDate = formatter.parse(dateInString);
-                    SimpleDateFormat sdfA = new SimpleDateFormat("yyyy-MM-dd");
                     String tmCheckingDate = sdf.format(utilDate);
-                    System.out.println("AAAAAAAA " + tmCheckingDate);
-
-                    //
                     System.out.println("COMPARE = " + sdf.parse(tmCheckingDate).compareTo(sdf.parse(currentDate)));
+                    sendEmail(teamchecking, sdf.parse(tmCheckingDate).compareTo(sdf.parse(currentDate)));
+
                 } catch (ParseException ex) {
                     Logger.getLogger(TimerSessionBean.class.getName()).log(Level.SEVERE, null, ex);
                 }
@@ -110,4 +110,25 @@ public class TimerSessionBean {
     public void setLastAutomaticTimeout(Date lastAutomaticTimeout) {
         this.lastAutomaticTimeout = lastAutomaticTimeout;
     }
+
+    public void sendEmail(Teamchecking teamchecking, int checkDays) {
+        if (checkDays == 0) {
+            System.out.println("Student id is " + teamchecking.getStudentId().getEmail());
+            boolean updateCheckedStatus = teamcheckingFacadeLocal.UpdateChecked(teamchecking);
+            if (updateCheckedStatus == true) {
+                Email email = new Email();
+                email.setToemail(teamchecking.getStudentId().getEmail());
+                email.setSubject(subject);
+                email.setMessagetext(messageText, "testHASH");
+                email.sendEMail();
+            }
+
+        } else if (checkDays > 0) {
+            //update status checked=1
+
+        } else {
+            //update status checked=1;   
+        }
+    }
+
 }
