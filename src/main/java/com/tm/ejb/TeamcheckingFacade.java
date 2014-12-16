@@ -38,11 +38,7 @@ public class TeamcheckingFacade extends AbstractFacade<Teamchecking> implements 
     @Override
     public boolean Update(Teamchecking teamchecking, Object data) {
         try {
-            System.out.println("FIND IN FACADE " + data);
             Teamchecking tmChecking = em.find(Teamchecking.class, Integer.parseInt((String) data));
-            System.out.println(">>>>>>>>>>>");
-            System.out.println("FIND TM CHECKING " + tmChecking.getId());
-            System.out.println("STUDENT NAME IS:: " + teamchecking.getStudentId() + " ::::: " + teamchecking.getPending());
             tmChecking.setStudentId(teamchecking.getStudentId());
             tmChecking.setPending(Boolean.FALSE);
             em.merge(tmChecking);
@@ -68,5 +64,20 @@ public class TeamcheckingFacade extends AbstractFacade<Teamchecking> implements 
         }
         return null;
     }
+    @Override
+    public List<Teamchecking> findByEmailChecked() {
+        try {
+            List<Teamchecking> results = new ArrayList<>();
+            Query query = em.createNamedQuery("Teamchecking.findByChecked");
+            query.setParameter("checked", false);
+            results = query.getResultList();
+            return results;
+        } catch (Exception e) {            
+            System.out.println("Find by checked is 0 in team checking");
+            e.printStackTrace();
+        }
+        return null;
+    }
+   
 
 }

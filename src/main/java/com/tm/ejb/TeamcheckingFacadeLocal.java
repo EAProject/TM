@@ -33,5 +33,7 @@ public interface TeamcheckingFacadeLocal {
     public boolean Update(Teamchecking teamchecking, Object data);
     
      List<Object[]> findByStudentChecking();
+     
+     public List<Teamchecking> findByEmailChecked();
     
 }
