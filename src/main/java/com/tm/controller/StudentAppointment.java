@@ -68,7 +68,6 @@ public class StudentAppointment implements Serializable{
         eventModel = new DefaultScheduleModel();        
         teamcheckings = new ArrayList<>();
         teamcheckings = teamcheckingFacadeLocal.findAll(); 
-        System.out.println("SIZE IS >> "+teamcheckings.size());
         for (Teamchecking teamchecking : teamcheckings) {
             Date tmStartDate = null;
             Date tmEndDate = null;
@@ -123,7 +122,6 @@ public class StudentAppointment implements Serializable{
     }
 
     public void onEventSelect(SelectEvent selectEvent) {
-        System.out.println("SSSSSSSSSSSSSSSSs ");
         event = (ScheduleEvent) selectEvent.getObject();
     }
 

@@ -73,7 +73,6 @@ public class ScheduleView implements Serializable {
         eventModel = new DefaultScheduleModel();        
         teamcheckings = new ArrayList<>();
         teamcheckings = teamcheckingFacadeLocal.findAll();        
-        System.out.println("Size is >> " + teamcheckings.size());
         for (Teamchecking teamchecking : teamcheckings) {
             Date tmStartDate = null;
             Date tmEndDate = null;
@@ -106,8 +105,6 @@ public class ScheduleView implements Serializable {
     }
 
     public ScheduleModel getEventModel() {
-        System.out.println("EVENT MODEL IS>> " + eventModel);
-        System.out.println("ID IS "+event.getData());
         return eventModel;
     }
 
@@ -149,7 +146,6 @@ public class ScheduleView implements Serializable {
 
         HttpSession session = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(true);
         int teacherId = (int) session.getAttribute("userId");
-        System.out.println("Teacher iD is " + teacherId);
         Teacher teacher = teacherFacadeLocal.find(teacherId);
 
         Teamchecking teamchecking = new Teamchecking();

@@ -61,23 +61,23 @@ public class TimerSessionBean {
         logger.info("Automatic timeout occured");
         List<Teamchecking> teamcheckings = new ArrayList<>();
         teamcheckings = teamcheckingFacadeLocal.findByEmailChecked();
-        
+
         try {
             for (Teamchecking teamchecking : teamcheckings) {
-                try {
-                    String dateInString = teamchecking.getCheckingStartTime();
-                    Date dateNow = new Date();
-                    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-                    String currentDate = sdf.format(dateNow);
+                if (teamchecking.getPending() == false) {
+                    try {
+                        String dateInString = teamchecking.getCheckingStartTime();
+                        Date dateNow = new Date();
+                        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+                        String currentDate = sdf.format(dateNow);
+                        SimpleDateFormat formatter = new SimpleDateFormat("MMMM d, yyyy");
+                        java.util.Date utilDate = formatter.parse(dateInString);
+                        String tmCheckingDate = sdf.format(utilDate);
+                        sendEmail(teamchecking, sdf.parse(tmCheckingDate).compareTo(sdf.parse(currentDate)));
 
-                    SimpleDateFormat formatter = new SimpleDateFormat("MMMM d, yyyy");
-                    java.util.Date utilDate = formatter.parse(dateInString);
-                    String tmCheckingDate = sdf.format(utilDate);
-                    System.out.println("COMPARE = " + sdf.parse(tmCheckingDate).compareTo(sdf.parse(currentDate)));
-                    sendEmail(teamchecking, sdf.parse(tmCheckingDate).compareTo(sdf.parse(currentDate)));
-
-                } catch (ParseException ex) {
-                    Logger.getLogger(TimerSessionBean.class.getName()).log(Level.SEVERE, null, ex);
+                    } catch (ParseException ex) {
+                        Logger.getLogger(TimerSessionBean.class.getName()).log(Level.SEVERE, null, ex);
+                    }
                 }
 
             }
@@ -112,12 +112,13 @@ public class TimerSessionBean {
         this.lastAutomaticTimeout = lastAutomaticTimeout;
     }
 
-    public void sendEmail(Teamchecking teamchecking, int checkDays) {      
-        com.tm.entities.Email emailBean=emailFacadeLocal.findByEmailContent();
-        
+    public void sendEmail(Teamchecking teamchecking, int checkDays) {
+        com.tm.entities.Email emailBean = emailFacadeLocal.findByEmailContent();
         if (checkDays == 0) {
             boolean updateCheckedStatus = teamcheckingFacadeLocal.UpdateChecked(teamchecking);
+            System.out.println("Get status");
             if (updateCheckedStatus == true) {
+                System.out.println("Get email");
                 EmailNotification email = new EmailNotification();
                 email.setToemail(teamchecking.getStudentId().getEmail());
                 email.setSubject(emailBean.getSubject());

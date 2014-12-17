@@ -32,11 +32,8 @@ public class UserFacade extends AbstractFacade<User> implements UserFacadeLocal 
     @Override
     public User checkUserName(String email) {
         try {
-             User user=new User();
-            //Query q=em.createNamedQuery("User.findByIsDeleted");
-             //WHERE  AND
+             User user=new User();           
              Query q=em.createQuery("SELECT u FROM User u WHERE u.isDeleted = :isDeleted AND u.email = :email");
-             System.out.println(">>>>>>>>>>>>>>>");
              q.setParameter("isDeleted", false); 
              q.setParameter("email", email); 
             user=(User) q.getSingleResult();
