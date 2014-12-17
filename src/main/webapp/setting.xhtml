@@ -22,7 +22,7 @@
                             <h:outputText value="Subject" />
                             <h:inputText value="#{tMSetting.email.subject}" />
                             <h:outputText value="Message" />
-                            <h:inputText value="#{tMSetting.email.message}" />
+                            <h:inputTextarea value="#{tMSetting.email.message}"  />
                             <h:commandButton value="Update" action="#{tMSetting.updateEmailInfo()}"/>
                         </h:panelGrid>
                     </p:tab>

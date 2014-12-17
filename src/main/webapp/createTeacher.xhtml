@@ -21,13 +21,12 @@
                     <h:inputText value="#{teacherBean.teacher.lastName}" />
                     <h:outputText value="Email" />
                     <h:inputText value="#{teacherBean.teacher.email}" />
-                    <h:outputText value="Password" />
-                    <h:inputSecret value="#{teacherBean.teacher.password}" />
+                    <h:outputText value="Password " />
+                    <p:password id="inlineFeedback" value="#{teacherBean.teacher.password}" feedback="true" inline="true" />  
                     <h:outputText value="ContactNumber" />
                     <h:inputText value="#{teacherBean.teacher.contactNumber}" />
                     
-                     <h:outputText value="Inline Feedback: " />
-                     <p:password id="inlineFeedback" value="#{teacherBean.teacher.password}" feedback="true" inline="true" />
+                    
   
                     
                     
