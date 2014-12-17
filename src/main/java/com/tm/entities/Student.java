@@ -23,7 +23,7 @@ import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author SuJoshi
+ * @author Jagendra
  */
 @Entity
 @Table(name = "student")
@@ -59,7 +59,7 @@ public class Student implements Serializable {
     private String lastName;
     // @Pattern(regexp="[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?", message="Invalid email")//if the field contains email address consider using this annotation to enforce field validation
     @Size(max = 255)
-    @Column(name = "email")
+    @Column(name =  "email")
     private String email;
     @Column(name = "is_deleted")
     private Boolean isDeleted;
@@ -74,6 +74,7 @@ public class Student implements Serializable {
     @Size(max = 255)
     @Column(name = "password")
     private String password;
+    
     @Size(max = 255)
     @Column(name = "batch")
     private String batch;
@@ -83,6 +84,7 @@ public class Student implements Serializable {
     public Student() {
     }
 
+    
     public Student(Integer id) {
         this.id = id;
     }
@@ -206,7 +208,7 @@ public class Student implements Serializable {
 
     @Override
     public String toString() {
-        return "com.tm.entities.Student[ id=" + id + " ]";
+                return "com.tm.entities.Student[ id=" + id + " ]";
     }
     
 }
