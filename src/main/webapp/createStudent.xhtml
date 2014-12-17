@@ -8,10 +8,10 @@
 
     <ui:composition template="/main_template.xhtml">
         <ui:define name="body">
-
-        Create Student
+            <h:panelGrid rendered="#{loginManaged.showCreateStudent}">Create Student #{loginManaged.showCreateStudent}</h:panelGrid>
+       
         <h:form id="form">
-            <p:panel header="Personal Details">
+            <p:panel header="Personal Details" rendered="#{loginManaged.showCreateStudent}">
                 <h:panelGrid columns="2">
                     <h:outputText value="FirstName" />
                     <h:inputText value="#{studentDetails.student.firstName}" />  
@@ -41,8 +41,8 @@
                     Student Editing
                 </f:facet>
 
-                <p:ajax event="rowEdit" listener="#{studentDetails.onStudentRowEdit}" update=":form:msgs" />
-                <p:ajax event="rowEditCancel" listener="#{studentDetails.onStudentRowCancel}" update=":form:msgs" />
+                <p:ajax rendered="#{loginManaged.showCreateStudent}" event="rowEdit" listener="#{studentDetails.onStudentRowEdit}" update=":form:msgs" />
+                <p:ajax rendered="#{loginManaged.showCreateStudent}" event="rowEditCancel" listener="#{studentDetails.onStudentRowCancel}" update=":form:msgs" />
 
                 <p:column headerText="Id">
                     <p:cellEditor>

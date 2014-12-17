@@ -36,6 +36,7 @@ public class LoginManaged implements Serializable{
     private boolean showCreateAppointment;
     private boolean showStudentAppointmentDate;
     private boolean showStudentTMCheckingStatus;
+    private boolean showCreateStudent;
 
     public String checkLogin() {
         User user = facadeLocal.checkUserName(username);
@@ -45,6 +46,7 @@ public class LoginManaged implements Serializable{
         showCreateAppointment = false;
         showStudentAppointmentDate = false;
         showStudentTMCheckingStatus = false;
+        showCreateStudent=false;
         if (user != null) {
             if (user.getPassword().equals(password)) {
                 int loggedInID = 0;
@@ -59,6 +61,7 @@ public class LoginManaged implements Serializable{
                     showCreateAppointment = true;
                     showStudentAppointmentDate = true;
                     showStudentTMCheckingStatus = true;
+                    showCreateStudent=true;
                 } else if (TMRole.valueOf("TEACHER").getTmRole() == user.getRole()) {
                     loggedInID = user.getTeacher().getId();
                     showAddTeacher = false;
@@ -67,6 +70,7 @@ public class LoginManaged implements Serializable{
                     showCreateAppointment = true;
                     showStudentAppointmentDate = false;
                     showStudentTMCheckingStatus = true;
+                    showCreateStudent=false;
                 } else if (TMRole.valueOf("STUDENT").getTmRole() == user.getRole()) {
                     loggedInID = user.getStudent().getId();
                     showAddTeacher = false;
@@ -75,6 +79,7 @@ public class LoginManaged implements Serializable{
                     showCreateAppointment = false;
                     showStudentAppointmentDate = true;
                     showStudentTMCheckingStatus = true;
+                    showCreateStudent=false;
                 } else {
                     System.out.println("Problem with role of user");
                 }
@@ -173,5 +178,14 @@ public class LoginManaged implements Serializable{
     public void setShowStudentTMCheckingStatus(boolean showStudentTMCheckingStatus) {
         this.showStudentTMCheckingStatus = showStudentTMCheckingStatus;
     }
+
+    public boolean isShowCreateStudent() {
+        return showCreateStudent;
+    }
+
+    public void setShowCreateStudent(boolean showCreateStudent) {
+        this.showCreateStudent = showCreateStudent;
+    }
+    
 
 }
