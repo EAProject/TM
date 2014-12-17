@@ -12,11 +12,10 @@
     </h:head>   
     <h:body>
         <div id="container">
-
             <h:form>
                 <div style="padding:10px;">
                     
-                    <p style="padding-left:20px; color: red; text-align: center;">
+                    <p style="padding-left:25px; color: red; text-align: center;">
                         <h:outputText value="#{loginManaged.errorMessage}" />
                     </p>
                     
@@ -27,14 +26,9 @@
 
                     <label for="username"  style="padding-left:20px;">Password:</label>
 
-
-
                     <h:inputSecret value="#{loginManaged.password}" />
 
                     <div id="lower">
-
-
-
                         <h:commandButton value="Login" action="#{loginManaged.checkLogin()}"/>
 
                     </div>
